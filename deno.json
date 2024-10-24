@@ -10,5 +10,9 @@
   },
   "imports": {
     "phaser": "npm:phaser@^3.86.0"
+  },
+  "fmt": {
+    "singleQuote": true,
+    "useTabs": true
   }
 }
