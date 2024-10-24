@@ -23,6 +23,10 @@ jobs:
           deno-version: v2.x
       - run: deno install
       - run: deno task build
+      - name: Check build output
+        run: |
+          echo "Listing dist directory"
+          ls -al ./dist/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
