@@ -22,3 +22,5 @@ const GAME_CONFIG = {
 document.addEventListener("DOMContentLoaded", () => {
   new Phaser.Game(GAME_CONFIG);
 });
+
+//some change
