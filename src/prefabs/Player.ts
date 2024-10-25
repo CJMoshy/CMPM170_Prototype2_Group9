@@ -1,9 +1,10 @@
 import Phaser from "phaser"
 export default class Player extends Phaser.Physics.Arcade.Sprite{
-    keys: any;
+    keys: Phaser.Types.Input.Keyboard.CursorKeys
     velocity: number;
-    constructor(scene, x, y){
-        super(scene, x, y, "player");
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame: number){
+        super(scene, x, y, "player"); // add texture
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.scene = scene; 
@@ -12,17 +13,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite{
         
         this.velocity = 250;
         
-        this.keys = scene.input.keyboard?.createCursorKeys();
+        this.keys = scene.input.keyboard?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys;
 
     }
 
-    update(){
+    override update(){
         this.handleMovement();
     }
 
     //pulled from https://github.com/CJMoshy/Gemetic-Dungeon/blob/main/src/prefabs/Player.ts lines 36 to 63
     handleMovement(){
-        let vector: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0)
+        const vector: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0)
         if (this.keys.down.isDown) {
             vector.y = 1
         }
