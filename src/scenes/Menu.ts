@@ -1,6 +1,10 @@
 import Phaser from 'phaser';
-import Blood_Moon_img from '../../assets/font/BloodMoon/BloodMoonPng.json';
-import Blood_Moon_b64 from '../../assets/font/BloodMoon/BloodMoon.json';
+import Blood_Moon_img from '../../assets/font/BloodMoon/BloodMoonPng.json' with {
+	type: 'json',
+};
+import Blood_Moon_b64 from '../../assets/font/BloodMoon/BloodMoon.json' with {
+	type: 'json',
+};
 const text_config = { fontSize: '30px', fontFamily: 'courrier' };
 
 export default class Menu extends Phaser.Scene {
