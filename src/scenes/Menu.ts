@@ -12,9 +12,8 @@ export default class Menu extends Phaser.Scene {
 	}
 
 	create() {
-
 		//spooky
-		this.sound.play('abyss', {loop: true})
+		this.sound.play('abyss', { loop: true });
 
 		const { width, height } = this.game.config;
 		const dog = this.add.image(
@@ -45,7 +44,7 @@ export default class Menu extends Phaser.Scene {
 			yoyo: true,
 		});
 
-		this.custom_text("Necro Dog")
+		this.custom_text('Necro Dog');
 	}
 	// https://phaser.io/examples/v3.85.0/loader/base64/view/bitmap-text
 	custom_text(text: string) {
@@ -54,7 +53,7 @@ export default class Menu extends Phaser.Scene {
 		// deno-lint-ignore no-this-alias
 		const _this = this;
 		image.onload = () => {
-			 _this.textures.addImage('BloodMoon', image);
+			_this.textures.addImage('BloodMoon', image);
 			const data = Phaser.GameObjects.BitmapText.ParseXMLBitmapFont(
 				xml,
 				_this.textures.getFrame('BloodMoon'),
@@ -67,9 +66,13 @@ export default class Menu extends Phaser.Scene {
 				frame: null,
 			});
 			const { width, height } = this.game.config;
-            _this.add.bitmapText(width as number /2, height as number / 2 -200, 'BloodMoon', text).setOrigin(0.5)
-		}; 
-        image.src = Blood_Moon_img.png
+			_this.add.bitmapText(
+				width as number / 2,
+				height as number / 2 - 200,
+				'BloodMoon',
+				text,
+			).setOrigin(0.5);
+		};
+		image.src = Blood_Moon_img.png;
 	}
-
 }

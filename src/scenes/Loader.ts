@@ -31,17 +31,16 @@ export default class Loader extends Phaser.Scene {
 	// 			texture: 'BloodMoon',
 	// 			frame: null,
 	// 		});
-    //         _this.add.bitmapText(0, 0, 'BloodMoon', 'Bitmap Text Decoded from base64');
+	//         _this.add.bitmapText(0, 0, 'BloodMoon', 'Bitmap Text Decoded from base64');
 	// 	};
 
-        
-    //     image.src = Blood_Moon_img.png
+	//     image.src = Blood_Moon_img.png
 	// }
 
 	preload() {
 		this.load.image('cursed_dog', cursed_dog);
 
-		this.load.audio('abyss', abyss)
+		this.load.audio('abyss', abyss);
 	}
 	create() {
 		this.scene.start('menuScene');
