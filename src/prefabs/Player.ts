@@ -6,14 +6,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		scene: Phaser.Scene,
 		x: number,
 		y: number,
-		// texture: string,
-		// frame: number,
+		texture: string,
+		frame: number,
 	) {
-		super(scene, x, y, 'player'); // add texture
+		super(scene, x, y, texture, frame); // add texture
 
 		scene.add.existing(this);
 		scene.physics.add.existing(this);
-		this.scene = scene;
 		this.setCollideWorldBounds(true);
 		this.setImmovable(true);
 

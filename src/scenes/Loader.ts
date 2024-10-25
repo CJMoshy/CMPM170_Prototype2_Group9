@@ -4,8 +4,10 @@ export default class Loader extends Phaser.Scene {
 		super({ key: 'loaderScene' });
 	}
 	preload() {
+		// image
 		this.load.image('cursed_dog', '../../assets/img/Cursed_Dog.png');
 
+		// audio
 		this.load.audio('abyss', '../../assets/audio/abyss.wav');
 	}
 	create() {
