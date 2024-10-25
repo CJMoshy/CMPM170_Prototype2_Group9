@@ -1,0 +1,42 @@
+import Phaser from "phaser"
+export default class Player extends Phaser.Physics.Arcade.Sprite{
+    keys: any;
+    velocity: number;
+    constructor(scene, x, y){
+        super(scene, x, y, "player");
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+        this.scene = scene; 
+        this.setCollideWorldBounds(true);
+        this.setImmovable(true);
+        
+        this.velocity = 250;
+        
+        this.keys = scene.input.keyboard?.createCursorKeys();
+
+    }
+
+    update(){
+        this.handleMovement();
+    }
+
+    //pulled from https://github.com/CJMoshy/Gemetic-Dungeon/blob/main/src/prefabs/Player.ts lines 36 to 63
+    handleMovement(){
+        let vector: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0)
+        if (this.keys.down.isDown) {
+            vector.y = 1
+        }
+        if (this.keys.up.isDown) {
+            vector.y = -1
+        }
+        if (this.keys.left.isDown) {
+            vector.x = -1
+        }
+        if (this.keys.right.isDown) {
+            vector.x = 1;
+        }
+
+        vector.normalize()
+        this.setVelocity(this.velocity * vector.x, this.velocity * vector.y)
+    }
+}
