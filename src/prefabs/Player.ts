@@ -1,43 +1,49 @@
-import Phaser from "phaser"
-export default class Player extends Phaser.Physics.Arcade.Sprite{
-    keys: Phaser.Types.Input.Keyboard.CursorKeys
-    velocity: number;
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame: number){
-        super(scene, x, y, "player"); // add texture
+import Phaser from 'phaser';
+export default class Player extends Phaser.Physics.Arcade.Sprite {
+	keys: Phaser.Types.Input.Keyboard.CursorKeys;
+	velocity: number;
+	constructor(
+		scene: Phaser.Scene,
+		x: number,
+		y: number,
+		// texture: string,
+		// frame: number,
+	) {
+		super(scene, x, y, 'player'); // add texture
 
-        scene.add.existing(this);
-        scene.physics.add.existing(this);
-        this.scene = scene; 
-        this.setCollideWorldBounds(true);
-        this.setImmovable(true);
-        
-        this.velocity = 250;
-        
-        this.keys = scene.input.keyboard?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys;
+		scene.add.existing(this);
+		scene.physics.add.existing(this);
+		this.scene = scene;
+		this.setCollideWorldBounds(true);
+		this.setImmovable(true);
 
-    }
+		this.velocity = 250;
 
-    override update(){
-        this.handleMovement();
-    }
+		this.keys = scene.input.keyboard
+			?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys;
+	}
 
-    //pulled from https://github.com/CJMoshy/Gemetic-Dungeon/blob/main/src/prefabs/Player.ts lines 36 to 63
-    handleMovement(){
-        const vector: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0)
-        if (this.keys.down.isDown) {
-            vector.y = 1
-        }
-        if (this.keys.up.isDown) {
-            vector.y = -1
-        }
-        if (this.keys.left.isDown) {
-            vector.x = -1
-        }
-        if (this.keys.right.isDown) {
-            vector.x = 1;
-        }
+	override update() {
+		this.handleMovement();
+	}
 
-        vector.normalize()
-        this.setVelocity(this.velocity * vector.x, this.velocity * vector.y)
-    }
+	//pulled from https://github.com/CJMoshy/Gemetic-Dungeon/blob/main/src/prefabs/Player.ts lines 36 to 63
+	handleMovement() {
+		const vector: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0);
+		if (this.keys.down.isDown) {
+			vector.y = 1;
+		}
+		if (this.keys.up.isDown) {
+			vector.y = -1;
+		}
+		if (this.keys.left.isDown) {
+			vector.x = -1;
+		}
+		if (this.keys.right.isDown) {
+			vector.x = 1;
+		}
+
+		vector.normalize();
+		this.setVelocity(this.velocity * vector.x, this.velocity * vector.y);
+	}
 }
