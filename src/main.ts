@@ -1,5 +1,6 @@
 import './styles/style.css';
-
+import Load from './scenes/Loader';
+import Play from './scenes/Play';
 import Phaser from 'phaser';
 
 const GAME_CONFIG = {
@@ -16,7 +17,8 @@ const GAME_CONFIG = {
 		arcade: {},
 	},
 	zoom: 1,
-	scene: [],
+	scene: [Load, Play],
+	fps: { forceSetTimeOut: true, target: 60 }
 };
 
 document.addEventListener('DOMContentLoaded', () => {

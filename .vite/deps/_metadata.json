@@ -1,13 +1,13 @@
 {
-  "hash": "b9e0569a",
-  "configHash": "89de9b7d",
+  "hash": "6e247064",
+  "configHash": "36229f29",
   "lockfileHash": "e3b0c442",
-  "browserHash": "94f55daf",
+  "browserHash": "6724d4ad",
   "optimized": {
     "phaser": {
       "src": "../../node_modules/.deno/phaser@3.86.0/node_modules/phaser/dist/phaser.js",
       "file": "phaser.js",
-      "fileHash": "9cd8bc10",
+      "fileHash": "a2512e35",
       "needsInterop": true
     }
   },
