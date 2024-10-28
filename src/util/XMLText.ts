@@ -12,7 +12,7 @@ export default function custom_text(
 	scene: Phaser.Scene,
 	name: string,
 	text: string,
-	xml: any,
+	xml: string,
 	png: string,
 	x: number,
 	y: number,
@@ -20,8 +20,12 @@ export default function custom_text(
 	const _xml = Phaser.DOM.ParseXML(atob(xml));
 	const image = new Image();
 	image.onload = () => {
-		scene.textures.addImage(name, image);
+		if(!scene.textures.exists(name)){
+			scene.textures.addImage(name, image);
+		}
+		// scene.textures.addImage(name, image);
 		const _data = Phaser.GameObjects.BitmapText.ParseXMLBitmapFont(
+			// @ts-ignore: type alias
 			_xml,
 			scene.textures.getFrame(name),
 			0,

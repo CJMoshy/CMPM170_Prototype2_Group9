@@ -23,6 +23,8 @@ export default class Credits extends Phaser.Scene {
 			width as number / 2,
 			height as number / 2,
 		);
+
+        this.add.text( width as number / 2, height as number / 2 + 50, 'Return').setOrigin(0.5).setInteractive().on('pointerdown', () => this.scene.start('menuScene'))
 	}
 	override update(time: number, delta: number): void {
 	}
