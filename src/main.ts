@@ -1,6 +1,7 @@
 import './styles/style.css';
 import Loader from './scenes/Loader.ts';
 import Menu from './scenes/Menu.ts';
+import Play from './scenes/Play.ts';
 import Phaser from 'phaser';
 
 const GAME_CONFIG = {
@@ -17,7 +18,7 @@ const GAME_CONFIG = {
 		arcade: {},
 	},
 	zoom: 1,
-	scene: [Loader, Menu],
+	scene: [Loader, Menu, Play],
 };
 
 document.addEventListener('DOMContentLoaded', () => {
