@@ -1,5 +1,7 @@
 import './styles/style.css';
-
+import Loader from './scenes/Loader.ts';
+import Menu from './scenes/Menu.ts';
+import Play from './scenes/Play.ts';
 import Phaser from 'phaser';
 
 const GAME_CONFIG = {
@@ -7,16 +9,19 @@ const GAME_CONFIG = {
 	parent: 'phaser-game',
 	scale: {
 		autoCenter: Phaser.Scale.CENTER_BOTH,
-		size: Phaser.Scale.FIT,
-		zoom: 0.75,
+		zoom: 2,
 	},
+	width: 480,
+	height: 320,
 	pixelArt: true,
 	physics: {
 		default: 'arcade',
-		arcade: {},
+		arcade: {
+			debug: true,
+		},
 	},
-	zoom: 1,
-	scene: [],
+	scene: [Loader, Menu, Play],
+	fps: { forceSetTimeOut: true, target: 60 },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
