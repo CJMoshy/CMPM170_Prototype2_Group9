@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
-import cursed_dog from '../../assets/img/Cursed_Dog.png'
-import abyss from '../../assets/audio/abyss.wav'
-import click from '../../assets/audio/click.wav'
+import cursed_dog from '../../assets/img/Cursed_Dog.png';
+import abyss from '../../assets/audio/abyss.wav';
+import click from '../../assets/audio/click.wav';
 
-import player from '../../assets/img/blue_townie.png'
-import bones from '../../assets/img/bonepile.png'
-import stash from '../../assets/img/stash.png'
+import player from '../../assets/img/blue_townie.png';
+import bones from '../../assets/img/bonepile.png';
+import stash from '../../assets/img/stash.png';
 
-import KRSP from '../../assets/font/KRS/KennyRocketSquare_0.png'
-import KRSF from '../../assets/font/KRS/KennyRocketSquare.fnt'
+import KRSP from '../../assets/font/KRS/KennyRocketSquare_0.png';
+import KRSF from '../../assets/font/KRS/KennyRocketSquare.fnt';
 
 export default class Loader extends Phaser.Scene {
 	constructor() {
