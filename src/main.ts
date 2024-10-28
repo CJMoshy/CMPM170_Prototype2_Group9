@@ -9,15 +9,15 @@ const GAME_CONFIG = {
 	parent: 'phaser-game',
 	scale: {
 		autoCenter: Phaser.Scale.CENTER_BOTH,
-		size: Phaser.Scale.FIT,
-		zoom: 0.75,
+		zoom: 2,
 	},
+	width: 480,
+	height: 320,
 	pixelArt: true,
 	physics: {
 		default: 'arcade',
 		arcade: {},
 	},
-	zoom: 1,
 	scene: [Loader, Menu, Play],
 };
 

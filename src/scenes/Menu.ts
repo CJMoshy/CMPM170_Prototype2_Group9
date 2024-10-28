@@ -28,25 +28,27 @@ export default class Menu extends Phaser.Scene {
 		this.sound.play('abyss', { loop: true, volume: VOLUME_TYPE.VOLUME_SOFT });
 
 		const { width, height } = this.game.config;
+		console.log(width, height);
 		const dog = this.add.image(
 			width as number / 2,
 			height as number / 2,
 			'cursed_dog',
-		);
+		).setScale(0.25);
 		this.add.text(
 			width as number / 6,
 			height as number / 1.5,
 			'Start',
 			text_config,
-		).setOrigin(0.5).setInteractive().on('pointerdown', () => {
+		).setOrigin(0.5).setScale(0.5).setInteractive().on('pointerdown', () => {
 			this.sound.play('click', { volume: VOLUME_TYPE.VOLUME_SOFT });
+			this.scene.start('playScene');
 		});
 		this.add.text(
 			width as number - (width as number / 6),
 			height as number / 1.5,
 			'Credits',
 			text_config,
-		).setOrigin(0.5).setInteractive().on('pointerdown', () => {
+		).setOrigin(0.5).setScale(0.5).setInteractive().on('pointerdown', () => {
 			this.sound.play('click', { volume: VOLUME_TYPE.VOLUME_SOFT });
 		});
 
@@ -83,10 +85,10 @@ export default class Menu extends Phaser.Scene {
 			const { width, height } = this.game.config;
 			_this.add.bitmapText(
 				width as number / 2,
-				height as number / 2 - 200,
+				height as number / 2 - 110,
 				'BloodMoon',
 				text,
-			).setOrigin(0.5);
+			).setOrigin(0.5).setScale(0.5);
 		};
 		image.src = Blood_Moon_img.png;
 	}
