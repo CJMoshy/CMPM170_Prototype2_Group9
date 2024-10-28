@@ -10,8 +10,9 @@
  */
 export default function custom_text(
 	scene: Phaser.Scene,
+	name: string,
 	text: string,
-	xml: string,
+	xml: any,
 	png: string,
 	x: number,
 	y: number,
@@ -19,22 +20,22 @@ export default function custom_text(
 	const _xml = Phaser.DOM.ParseXML(atob(xml));
 	const image = new Image();
 	image.onload = () => {
-		scene.textures.addImage('BloodMoon', image);
+		scene.textures.addImage(name, image);
 		const _data = Phaser.GameObjects.BitmapText.ParseXMLBitmapFont(
 			_xml,
-			scene.textures.getFrame('BloodMoon'),
+			scene.textures.getFrame(name),
 			0,
 			0,
 		);
-		scene.cache.bitmapFont.add('BloodMoon', {
+		scene.cache.bitmapFont.add(name, {
 			data: _data,
-			texture: 'BloodMoon',
+			texture: name,
 			frame: null,
 		});
 		scene.add.bitmapText(
 			x,
 			y,
-			'BloodMoon',
+			name,
 			text,
 		).setOrigin(0.5).setScale(0.5);
 	};
