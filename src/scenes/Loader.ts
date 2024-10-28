@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import cursed_dog from '../../assets/img/Cursed_Dog.png';
-import abyss from '../../assets/audio/abyss.wav';
+// import abyss from '../../assets/audio/abyss.wav';
 import click from '../../assets/audio/click.wav';
 
 import player from '../../assets/img/blue_townie.png';
@@ -19,7 +19,7 @@ export default class Loader extends Phaser.Scene {
 		this.load.image('cursed_dog', cursed_dog);
 
 		// audio
-		this.load.audio('abyss', abyss);
+		// this.load.audio('abyss', abyss);
 		this.load.audio('click', click);
 
 		this.load.image('player', player);

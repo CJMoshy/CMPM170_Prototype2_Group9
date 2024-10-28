@@ -26,7 +26,7 @@ export default class Menu extends Phaser.Scene {
 
 	create() {
 		//spooky
-		this.sound.play('abyss', { loop: true, volume: VOLUME_TYPE.VOLUME_SOFT });
+		// this.sound.play('abyss', { loop: true, volume: VOLUME_TYPE.VOLUME_SOFT });
 
 		const { width, height } = this.game.config;
 		console.log(width, height);
