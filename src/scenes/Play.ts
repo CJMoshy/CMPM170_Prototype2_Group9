@@ -44,22 +44,10 @@ export default class Play extends Phaser.Scene {
 		const wallLayer = map.createLayer('obstacle', tiles, 0, 0);
 		map.createLayer('Graves', tiles, 0, 0);
 		wallLayer?.setCollisionByProperty({ Collision: true });
-
 		this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
 		const { width, height } = this.game.config;
-		this.bones = this.physics.add.sprite(
-			(width as number / 2) + 50,
-			height as number / 2,
-			'bones',
-		).setOrigin(0.5);
-		this.bones.setScale(0.025);
-		this.stash = this.physics.add.sprite(
-			width as number / 2,
-			height as number / 2 + 50,
-			'stash',
-		).setOrigin(0.5);
-		this.stash.setScale(0.05);
+
 		this.player = new Player(
 			this,
 			width as number / 2,
@@ -68,6 +56,32 @@ export default class Play extends Phaser.Scene {
 			0,
 		);
 
+		this.cameras.main.setBounds(0, 0, width as number, height as number);
+		this.cameras.main.setZoom(2);
+		this.cameras.main.setFollowOffset(0);
+		this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
+		this.cameras.main.fadeIn(1000, 0, 0, 0);
+
+		// const { width, height } = this.game.config;
+		// this.bones = this.physics.add.sprite(
+		// 	(width as number / 2) + 50,
+		// 	height as number / 2,
+		// 	'bones',
+		// ).setOrigin(0.5);
+		// this.bones.setScale(0.025);
+		// this.stash = this.physics.add.sprite(
+		// 	width as number / 2,
+		// 	height as number / 2 + 50,
+		// 	'stash',
+		// ).setOrigin(0.5);
+		// this.stash.setScale(0.05);
+		// this.player = new Player(
+		// 	this,
+		// 	width as number / 2,
+		// 	height as number / 2,
+		// 	'player',
+		// 	0,
+		// );
 		// this.boneCountText = this.add.bitmapText(
 		// 	this.player.x,
 		// 	this.player.y - 100,
@@ -88,21 +102,23 @@ export default class Play extends Phaser.Scene {
 
 		// console.log(this.boneCount.toString(), this.stashCount.toString());
 
-		this.physics.add.overlap(this.bones, this.player, () => {
-			if (this.boneBuffer > 60 && this.boneCount < 3) {
-				this.boneCount += 1;
-				this.boneBuffer = 0;
-				// this.boneCountText.text = this.boneCount.toString();
-				console.log(this.boneCount);
-			}
-		});
+		// this.physics.add.overlap(this.bones, this.player, () => {
+		// 	if (this.boneBuffer > 60 && this.boneCount < 3) {
+		// 		this.boneCount += 1;
+		// 		this.boneBuffer = 0;
+		// 		// this.boneCountText.text = this.boneCount.toString();
+		// 		console.log(this.boneCount);
+		// 	}
+		// });
 
-		this.physics.add.overlap(this.stash, this.player, () => {
-			this.stashCount += this.boneCount;
-			this.boneCount = 0;
-			// this.boneCountText.text = this.boneCount.toString();
-			// this.stashCountText.text = this.stashCount.toString();
-		});
+		// this.physics.add.overlap(this.stash, this.player, () => {
+		// 	this.stashCount += this.boneCount;
+		// 	this.boneCount = 0;
+		// 	// this.boneCountText.text = this.boneCount.toString();
+		// 	// this.stashCountText.text = this.stashCount.toString();
+		// });
+
+		this.physics.add.collider(this.player, wallLayer!);
 	}
 
 	// deno-lint-ignore no-unused-vars
