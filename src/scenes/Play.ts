@@ -9,8 +9,8 @@ export default class Play extends Phaser.Scene {
 	private player!: Player;
 	private bones!: Phaser.Physics.Arcade.Sprite;
 	private stash!: Phaser.Physics.Arcade.Sprite;
-	private boneCountText!: Phaser.GameObjects.BitmapText;
-	private stashCountText!: Phaser.GameObjects.BitmapText;
+	// private boneCountText!: Phaser.GameObjects.BitmapText;
+	// private stashCountText!: Phaser.GameObjects.BitmapText;
 	private boneCount: number;
 	private stashCount: number;
 	private boneBuffer: number;
@@ -68,23 +68,23 @@ export default class Play extends Phaser.Scene {
 			0,
 		);
 
-		this.boneCountText = this.add.bitmapText(
-			this.player.x,
-			this.player.y - 100,
-			'rocketSquare',
-			this.boneCount.toString(),
-			50,
-			1,
-		);
-		//
-		this.stashCountText = this.add.bitmapText(
-			this.stash.x,
-			this.stash.y - 150,
-			'rocketSquare',
-			this.stashCount.toString(),
-			50,
-			1,
-		);
+		// this.boneCountText = this.add.bitmapText(
+		// 	this.player.x,
+		// 	this.player.y - 100,
+		// 	'rocketSquare',
+		// 	this.boneCount.toString(),
+		// 	50,
+		// 	1,
+		// );
+		// //
+		// this.stashCountText = this.add.bitmapText(
+		// 	this.stash.x,
+		// 	this.stash.y - 150,
+		// 	'rocketSquare',
+		// 	this.stashCount.toString(),
+		// 	50,
+		// 	1,
+		// );
 
 		// console.log(this.boneCount.toString(), this.stashCount.toString());
 
@@ -92,7 +92,7 @@ export default class Play extends Phaser.Scene {
 			if (this.boneBuffer > 60 && this.boneCount < 3) {
 				this.boneCount += 1;
 				this.boneBuffer = 0;
-				this.boneCountText.text = this.boneCount.toString();
+				// this.boneCountText.text = this.boneCount.toString();
 				console.log(this.boneCount);
 			}
 		});
@@ -100,8 +100,8 @@ export default class Play extends Phaser.Scene {
 		this.physics.add.overlap(this.stash, this.player, () => {
 			this.stashCount += this.boneCount;
 			this.boneCount = 0;
-			this.boneCountText.text = this.boneCount.toString();
-			this.stashCountText.text = this.stashCount.toString();
+			// this.boneCountText.text = this.boneCount.toString();
+			// this.stashCountText.text = this.stashCount.toString();
 		});
 	}
 
