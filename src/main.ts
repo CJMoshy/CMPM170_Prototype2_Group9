@@ -16,10 +16,12 @@ const GAME_CONFIG = {
 	pixelArt: true,
 	physics: {
 		default: 'arcade',
-		arcade: {},
+		arcade: {
+			debug: true,
+		},
 	},
 	scene: [Loader, Menu, Play],
-	fps: { forceSetTimeOut: true, target: 60 }
+	fps: { forceSetTimeOut: true, target: 60 },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
