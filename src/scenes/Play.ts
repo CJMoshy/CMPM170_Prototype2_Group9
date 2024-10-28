@@ -4,6 +4,7 @@ import tileset from '../../assets/tilemap/TilesetGraveyard.png';
 import mapData from '../../assets/tilemap/Graveyard_Scene.json' with {
 	type: 'json',
 };
+import custom_text from '../util/XMLText.ts';
 
 export default class Play extends Phaser.Scene {
 	private player!: Player;
@@ -14,6 +15,7 @@ export default class Play extends Phaser.Scene {
 	private boneCount: number;
 	private stashCount: number;
 	private boneBuffer: number;
+	private graveText: Array<string>; // temp location of epitaphs, will switch to JSON
 
 	constructor() {
 		super({ key: 'playScene' });
@@ -143,4 +145,14 @@ export default class Play extends Phaser.Scene {
 	//     this.boneCountText.x = this.dog.x;
 	//     this.boneCountText.y = this.dog.y - 100;
 	// }
+
+	grave_interact(grave: number){
+		const window = this.add.graphics().setDepth(2);
+    	window.fillStyle(0x000000, 1); // Color and alpha (transparency)
+    	window.fillRect(this.cameras.main.scrollX + this.cameras.main.width/2 - 100, this.cameras.main.scrollY + this.cameras.main.height/2 - 100, 200, 200);
+
+		
+
+
+	}
 }
