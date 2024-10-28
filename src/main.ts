@@ -19,6 +19,7 @@ const GAME_CONFIG = {
 		arcade: {},
 	},
 	scene: [Loader, Menu, Play],
+	fps: { forceSetTimeOut: true, target: 60 }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
