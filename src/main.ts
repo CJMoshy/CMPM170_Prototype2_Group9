@@ -1,6 +1,7 @@
 import './styles/style.css';
 import Loader from './scenes/Loader.ts';
 import Menu from './scenes/Menu.ts';
+import Credits from './scenes/Credits.ts';
 import Play from './scenes/Play.ts';
 import Phaser from 'phaser';
 
@@ -20,7 +21,7 @@ const GAME_CONFIG = {
 			debug: true,
 		},
 	},
-	scene: [Loader, Menu, Play],
+	scene: [Loader, Menu, Credits, Play],
 	fps: { forceSetTimeOut: true, target: 60 },
 };
 
