@@ -9,6 +9,7 @@ export default class Loader extends Phaser.Scene {
 
 		// audio
 		this.load.audio('abyss', '../../assets/audio/abyss.wav');
+		this.load.audio('click', '../../assets/audio/click.wav');
 	}
 	create() {
 		this.scene.start('menuScene');

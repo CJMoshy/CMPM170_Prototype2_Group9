@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 export default class Player extends Phaser.Physics.Arcade.Sprite {
 	keys: Phaser.Types.Input.Keyboard.CursorKeys;
 	velocity: number;
+	bone_count: number;
 	constructor(
 		scene: Phaser.Scene,
 		x: number,
@@ -20,6 +21,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 		this.keys = scene.input.keyboard
 			?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys;
+
+		// maybe change in the future to something more complex
+		this.bone_count = 0;
 	}
 
 	override update() {

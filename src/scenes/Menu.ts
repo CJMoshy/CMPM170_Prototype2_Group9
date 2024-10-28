@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import Blood_Moon_img from '../../assets/font/BloodMoon/BloodMoonPng.json' with {
 	type: 'json',
 };
-import Blood_Moon_b64 from '../../assets/font/BloodMoon/BloodMoon.json' with {
+import Blood_Moon_xml from '../../assets/font/BloodMoon/BloodMoon.json' with {
 	type: 'json',
 };
 
@@ -38,14 +38,17 @@ export default class Menu extends Phaser.Scene {
 			height as number / 1.5,
 			'Start',
 			text_config,
-		).setOrigin(0.5);
+		).setOrigin(0.5).setInteractive().on('pointerdown', () => {
+			this.sound.play('click', { volume: VOLUME_TYPE.VOLUME_SOFT });
+		});
 		this.add.text(
 			width as number - (width as number / 6),
 			height as number / 1.5,
 			'Credits',
 			text_config,
-		).setOrigin(0.5);
-		// start_btn.on('pointerdown', () => this.scene.start(''))
+		).setOrigin(0.5).setInteractive().on('pointerdown', () => {
+			this.sound.play('click', { volume: VOLUME_TYPE.VOLUME_SOFT });
+		});
 
 		this.add.tween({
 			targets: dog,
@@ -60,7 +63,7 @@ export default class Menu extends Phaser.Scene {
 	}
 	// https://phaser.io/examples/v3.85.0/loader/base64/view/bitmap-text
 	custom_text(text: string) {
-		const xml = Phaser.DOM.ParseXML(atob(Blood_Moon_b64.xml));
+		const xml = Phaser.DOM.ParseXML(atob(Blood_Moon_xml.xml));
 		const image = new Image();
 		// deno-lint-ignore no-this-alias
 		const _this = this;
