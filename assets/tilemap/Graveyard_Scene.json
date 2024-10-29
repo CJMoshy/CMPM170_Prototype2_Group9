@@ -111,7 +111,7 @@
             0, 0, 0, 116, 33, 34, 35, 36, 0, 0, 105, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 118, 0,
             0, 0, 0, 116, 0, 0, 0, 0, 0, 51, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 104, 130, 0,
             0, 0, 0, 128, 106, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 118, 0, 0,
-            0, 0, 0, 0, 128, 106, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 13, 26, 0, 0, 0, 1, 0, 0, 0, 104, 130, 0, 0,
+            0, 0, 0, 0, 128, 106, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 104, 130, 0, 0,
             0, 0, 0, 0, 0, 128, 106, 0, 0, 0, 117, 0, 0, 0, 0, 0, 0, 0, 0, 104, 122, 122, 122, 122, 122, 122, 130, 0, 0, 0,
             0, 0, 0, 55, 0, 0, 128, 127, 115, 122, 111, 127, 115, 115, 122, 115, 127, 127, 127, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -142,7 +142,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 47, 48, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 47, 48, 0, 0, 3, 0, 13, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 59, 60, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -312,7 +312,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":7,
+ "nextlayerid":8,
  "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -331,6 +331,24 @@
          "tilecount":144,
          "tileheight":16,
          "tiles":[
+                {
+                 "id":5,
+                 "properties":[
+                        {
+                         "name":"Collision",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":6,
+                 "properties":[
+                        {
+                         "name":"Collision",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
                 {
                  "id":8,
                  "properties":[
@@ -368,6 +386,80 @@
                         }]
                 }, 
                 {
+                 "id":12,
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"int",
+                         "value":12
+                        }, 
+                        {
+                         "name":"Interactable",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":13,
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"int",
+                         "value":13
+                        }, 
+                        {
+                         "name":"Interactable",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":14,
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"int",
+                         "value":14
+                        }, 
+                        {
+                         "name":"Interactable",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":15,
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"int",
+                         "value":15
+                        }, 
+                        {
+                         "name":"Interactable",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":17,
+                 "properties":[
+                        {
+                         "name":"Collision",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":18,
+                 "properties":[
+                        {
+                         "name":"Collision",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
                  "id":20,
                  "properties":[
                         {
@@ -401,6 +493,62 @@
                          "name":"collison",
                          "type":"bool",
                          "value":false
+                        }]
+                }, 
+                {
+                 "id":24,
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"int",
+                         "value":24
+                        }, 
+                        {
+                         "name":"Interactable",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":25,
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"int",
+                         "value":25
+                        }, 
+                        {
+                         "name":"Interactable",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":26,
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"int",
+                         "value":26
+                        }, 
+                        {
+                         "name":"Interactable",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":27,
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"int",
+                         "value":27
+                        }, 
+                        {
+                         "name":"Interactable",
+                         "type":"bool",
+                         "value":true
                         }]
                 }, 
                 {
@@ -492,7 +640,8 @@
                          "type":"bool",
                          "value":true
                         }]
-                }, 
+                },
+            
                 {
                  "id":46,
                  "properties":[
@@ -600,8 +749,7 @@
                          "type":"bool",
                          "value":true
                         }]
-                },
-            
+                }, 
                 {
                  "id":114,
                  "properties":[
@@ -763,7 +911,8 @@
                          "type":"bool",
                          "value":true
                         }]
-                }, 
+                },
+            
                 {
                  "id":132,
                  "properties":[

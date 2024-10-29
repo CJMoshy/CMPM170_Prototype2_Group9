@@ -74,6 +74,6 @@ export default class Play extends Phaser.Scene {
 	}
 
 	// deno-lint-ignore no-unused-vars
-	override update(time: number, delta: number): void {
+	override update(time: number, delta: number): void {	
 	}
 }
