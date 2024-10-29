@@ -3,7 +3,7 @@ import cursed_dog from '../../assets/img/Cursed_Dog.png';
 import abyss from '../../assets/audio/abyss.wav';
 import click from '../../assets/audio/click.wav';
 
-import player from '../../assets/img/blue_townie.png';
+import player from '../../assets/img/Necrodog.png';
 import bones from '../../assets/img/bonepile.png';
 import stash from '../../assets/img/stash.png';
 
