@@ -42,7 +42,7 @@ export default class Play extends Phaser.Scene {
 		map.createLayer('grass', tiles, 0, 0);
 		map.createLayer('Road', tiles, 0, 0);
 		const wallLayer = map.createLayer('obstacle', tiles, 0, 0);
-		map.createLayer('Graves', tiles, 0, 0);
+		const graveLayer = map.createLayer('Graves', tiles, 0, 0);
 		wallLayer?.setCollisionByProperty({ Collision: true });
 		this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -63,6 +63,14 @@ export default class Play extends Phaser.Scene {
 		this.cameras.main.fadeIn(1000, 0, 0, 0);
 
 		this.physics.add.collider(this.player, wallLayer!);
+		this.physics.add.collider(this.player, wallLayer!);
+		graveLayer?.setCollisionByProperty({ Interactable: true });
+		this.physics.add.overlap(this.player, graveLayer!, () => {
+			const tile = graveLayer?.getTileAtWorldXY(this.player.x, this.player.y);
+			if (tile?.properties.Interactable === true) {
+				console.log('dig for bones');
+			}
+		});
 	}
 
 	// deno-lint-ignore no-unused-vars
