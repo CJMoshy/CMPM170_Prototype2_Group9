@@ -24,20 +24,19 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.keys = scene.input.keyboard
 			?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys;
 		this.keys.left.on('down', () => {
-			if(!this.flipX){
-				this.flipX = !this.flipX
+			if (!this.flipX) {
+				this.flipX = !this.flipX;
 			}
-		})
+		});
 		this.keys.right.on('down', () => {
-			if(this.flipX){
-				this.flipX = !this.flipX
+			if (this.flipX) {
+				this.flipX = !this.flipX;
 			}
-		})
-		
+		});
+
 		// maybe change in the future to something more complex
 		this.bone_count = 0;
 	}
-
 
 	override update() {
 		this.handleMovement();
