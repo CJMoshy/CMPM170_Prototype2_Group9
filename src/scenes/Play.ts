@@ -79,7 +79,7 @@ export default class Play extends Phaser.Scene {
         this.testButton = this.input.keyboard?.addKey('E') as Phaser.Input.Keyboard.Key;
 		const stupidThis = this;
         this.testButton.on("down", function (event) {
-			stupidThis.grave_interact(0);
+			stupidThis.grave_interact(7);
         });
 		// end of test button listener for grave interact
 
@@ -187,7 +187,19 @@ export default class Play extends Phaser.Scene {
 
 		console.log(graveText[grave]);
 
-		this.add.text(this.cameras.main.scrollX + this.cameras.main.width/2 - 95, this.cameras.main.scrollY + this.cameras.main.height/2 - 75, graveText[grave], { font: '"Press Start 2P"' }).setScrollFactor(0,0);
+		this.add.text(
+			this.cameras.main.scrollX + this.cameras.main.width/2 - 95, 
+			this.cameras.main.scrollY + this.cameras.main.height/2 - 75, 
+			graveText[grave], 
+			{ 
+				fontFamily: 'Arial', 
+				fontSize: 10, 
+				color: '#fff',
+				wordWrap: {
+					width: 190
+				} 
+			}
+		).setScrollFactor(0,0);
 
 
 		
