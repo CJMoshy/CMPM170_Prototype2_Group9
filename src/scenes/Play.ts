@@ -4,7 +4,15 @@ import tileset from '../../assets/tilemap/TilesetGraveyard.png';
 import mapData from '../../assets/tilemap/Graveyard_Scene.json' with {
 	type: 'json',
 };
+// start of imports for grave interact
+import Blood_Moon_img from '../../assets/font/BloodMoon/BloodMoonPng.json' with {
+	type: 'json',
+};
+import Blood_Moon_xml from '../../assets/font/BloodMoon/BloodMoon.json' with {
+	type: 'json',
+};
 import custom_text from '../util/XMLText.ts';
+// end of imports for grave interact
 
 export default class Play extends Phaser.Scene {
 	private player!: Player;
@@ -15,7 +23,9 @@ export default class Play extends Phaser.Scene {
 	private boneCount: number;
 	private stashCount: number;
 	private boneBuffer: number;
-	private graveText: Array<string>; // temp location of epitaphs, will switch to JSON
+	// start of variables for grave interact
+    private testButton: Phaser.Input.Keyboard.Key; // button to skip gravestone collision, will be implemented with Zeke's merge
+	// end of variables for grave interact
 
 	constructor() {
 		super({ key: 'playScene' });
@@ -63,6 +73,15 @@ export default class Play extends Phaser.Scene {
 		this.cameras.main.setFollowOffset(0);
 		this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
 		this.cameras.main.fadeIn(1000, 0, 0, 0);
+
+
+		// start of test button listener for grave interact
+        this.testButton = this.input.keyboard?.addKey('E') as Phaser.Input.Keyboard.Key;
+		const stupidThis = this;
+        this.testButton.on("down", function (event) {
+			stupidThis.grave_interact(0);
+        });
+		// end of test button listener for grave interact
 
 		// const { width, height } = this.game.config;
 		// this.bones = this.physics.add.sprite(
@@ -147,9 +166,29 @@ export default class Play extends Phaser.Scene {
 	// }
 
 	grave_interact(grave: number){
-		const window = this.add.graphics().setDepth(2);
+		const window = this.add.graphics();
     	window.fillStyle(0x000000, 1); // Color and alpha (transparency)
-    	window.fillRect(this.cameras.main.scrollX + this.cameras.main.width/2 - 100, this.cameras.main.scrollY + this.cameras.main.height/2 - 100, 200, 200);
+    	window.fillRect(this.cameras.main.scrollX + this.cameras.main.width/2 - 100, this.cameras.main.scrollY + this.cameras.main.height/2 - 75, 200, 30);
+		window.setScrollFactor(0,0);
+
+		const { width, height } = this.game.config;
+		const graveText = [
+			"Here lies Sir Barksalot, loyal till the end",
+			"Here rests Fido, always chasing tails in the afterlife",
+			"Beloved companion: Rufus, forever fetching in spirit",
+			"In memory of Luna, who howled at the moon one last time",
+			"Here lies Max, who finally found the ultimate chew toy",
+			"RIP Bella, the queen of the backyard",
+			"Here rests Sparky, who followed every squirrel to the great beyond",
+			"In loving memory of Charlie, who ran free at the Rainbow Bridge",
+			"Here lies Daisy, who gave more kisses than any dog could count",
+			"Forever in our hearts: Zeus, the thunderous bark"
+		]
+
+		console.log(graveText[grave]);
+
+		this.add.text(this.cameras.main.scrollX + this.cameras.main.width/2 - 95, this.cameras.main.scrollY + this.cameras.main.height/2 - 75, graveText[grave], { font: '"Press Start 2P"' }).setScrollFactor(0,0);
+
 
 		
 
