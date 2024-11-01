@@ -3,6 +3,7 @@ import Loader from './scenes/Loader.ts';
 import Menu from './scenes/Menu.ts';
 import Credits from './scenes/Credits.ts';
 import Play from './scenes/Play.ts';
+import Writer from './scenes/Writer.ts';
 import Phaser from 'phaser';
 
 const GAME_CONFIG = {
@@ -18,10 +19,10 @@ const GAME_CONFIG = {
 	physics: {
 		default: 'arcade',
 		arcade: {
-			debug: true,
+			// debug: true,
 		},
 	},
-	scene: [Loader, Menu, Credits, Play],
+	scene: [Loader, Menu, Credits, Play, Writer],
 	fps: { forceSetTimeOut: true, target: 60 },
 };
 document.addEventListener(

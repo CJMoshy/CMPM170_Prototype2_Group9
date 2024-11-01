@@ -44,6 +44,8 @@ export default class Menu extends Phaser.Scene {
 				Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
 				() => {
 					this.scene.start('playScene');
+					this.scene.launch('writerScene');
+					this.scene.bringToTop('writerScene');
 				},
 			);
 		});

@@ -125,3 +125,29 @@ export default function custom_text(
 	};
 	image.src = png;
 }
+
+		// const window = this.add.graphics();
+		// window.fillStyle(0x000000, 1); // Color and alpha (transparency)
+		// window.fillRect(
+		// 	this.cameras.main.width / 2 - 100,
+		// 	this.cameras.main.height / 2 - 75,
+		// 	200,
+		// 	30,
+		// );
+		// window.setScrollFactor(0, 0);
+		// window.setVisible(false);
+
+		// const epitaph = this.add.text(
+		// 	this.cameras.main.width / 2 - 95,
+		// 	this.cameras.main.height / 2 - 75,
+		// 	'',
+		// 	{
+		// 		fontFamily: 'Roboto',
+		// 		fontSize: 10,
+		// 		color: '#fff',
+		// 		wordWrap: {
+		// 			width: 190,
+		// 		},
+		// 	},
+		// ).setScrollFactor(0);
+		// epitaph.setVisible(false);
