@@ -38,7 +38,7 @@ export default class Menu extends Phaser.Scene {
 			'necro',
 			'Start',
 		).setOrigin(0.5).setInteractive().on('pointerdown', () => {
-			this.sound.play('click', { volume: VOLUME_TYPE.VOLUME_SOFT }); // changel volume of ambient noise here
+			this.sound.play('click', { volume: VOLUME_TYPE.VOLUME_SOFT }); // change volume of ambient noise here
 			this.cameras.main.fadeOut(1000, 0, 0, 0);
 			this.cameras.main.once(
 				Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,

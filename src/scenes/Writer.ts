@@ -8,7 +8,7 @@ export default class Writer extends Phaser.Scene {
 	private TEXT_SIZE!: number;
 	private TEXT_MAX_WIDTH!: number;
 	private LETTER_TIMER!: number;
-
+	private writingBox!: Phaser.GameObjects.Sprite;
 	private dialogTyping!: boolean;
 	private dialogText!: Phaser.GameObjects.BitmapText | null;
 
@@ -20,14 +20,14 @@ export default class Writer extends Phaser.Scene {
 
 	init() {
 		// // dialog constants
-		// this.DBOX_X = this.game.config.width as number / 2; // dialog box x-position
-		// this.DBOX_Y = this.game.config.height as number / 2 - 110; // dialog box y-position
+		this.DBOX_X = this.game.config.width as number / 2; // dialog box x-position
+		this.DBOX_Y = this.game.config.height as number / 2 - 150; // dialog box y-position
 		this.DBOX_FONT = 'bone'; // dialog box font key
 
 		this.TEXT_X = this.game.config.width as number / 2; // text w/in dialog box x-position
-		this.TEXT_Y = this.game.config.height as number / 2 - 110; // text w/in dialog box y-position
-		this.TEXT_SIZE = 16; // text font size (in pixels)
-		this.TEXT_MAX_WIDTH = 420; // max width of text within box
+		this.TEXT_Y = this.game.config.height as number / 2 - 130; // text w/in dialog box y-position
+		this.TEXT_SIZE = 15; // text font size (in pixels)
+		this.TEXT_MAX_WIDTH = 350; // max width of text within box
 
 		this.LETTER_TIMER = 15; // # ms each letter takes to "type" onscreen
 
@@ -37,8 +37,8 @@ export default class Writer extends Phaser.Scene {
 
 	create() {
 		// // add dialog box sprite
-		// this.writingbox = this.add.sprite(this.DBOX_X, this.DBOX_Y, 'writing-box')
-		// 	.setOrigin(0.5, 0);
+		// this.writingBox = this.add.sprite(this.DBOX_X, this.DBOX_Y, 'dBox')
+		// .setOrigin(0.5, 0).setScale(0.95)
 
 		this.dialogText = this.add.bitmapText(
 			this.TEXT_X,
@@ -46,17 +46,15 @@ export default class Writer extends Phaser.Scene {
 			this.DBOX_FONT,
 			'',
 			this.TEXT_SIZE,
-		).setOrigin(0.5, 0);
+		).setOrigin(0.5, 0).setMaxWidth(this.TEXT_MAX_WIDTH);
 
-		interface playSceneData {
-			text: string;
-		}
 		this.events.on('playerLeftGrave', () => {
 			this.dialogText!.text = '';
 			this.dialogTyping = false;
 		});
 		this.events.on('dowindowthing', (data: playSceneData) => {
 			if (this.dialogTyping === false) {
+				console.log('here');
 				this.typeText(data.text);
 			}
 		});
@@ -66,6 +64,7 @@ export default class Writer extends Phaser.Scene {
 
 	//credit nathan alitce @UCSC's CMPM dept.
 	typeText(text: string) {
+		console.log(this.dialogText?.maxWidth);
 		// lock input while typing
 		this.dialogTyping = true;
 

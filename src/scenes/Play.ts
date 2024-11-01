@@ -27,7 +27,7 @@ export default class Play extends Phaser.Scene {
 			],
 			['22, 14', 'Forever in our hearts: Zeus, the thunderous bark'],
 			['23, 3', 'Here sleeps Coco, the fluffiest guardian of dreams'],
-			['24, 9', 'In memory of Gus, who never met a bone he didn’t like'],
+			['24, 9', 'In memory of Gus, who never met a bone he didnt like'],
 			['25, 5', 'Here lies Trixie, who outsmarted the vacuum until the end'],
 			['26, 7', 'Rest in peace, Benny, who always believed he was a lap dog'],
 			['26, 9', 'Here lies Nala, who made every car ride an adventure'],
