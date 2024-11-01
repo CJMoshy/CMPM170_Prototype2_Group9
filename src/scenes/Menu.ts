@@ -1,15 +1,6 @@
 import Phaser from 'phaser';
-import Blood_Moon_img from '../../assets/font/BloodMoon/BloodMoonPng.json' with {
-	type: 'json',
-};
-import Blood_Moon_xml from '../../assets/font/BloodMoon/BloodMoon.json' with {
-	type: 'json',
-};
-import custom_text from '../util/XMLText.ts';
 
-const text_config = { fontSize: '30px', fontFamily: 'courrier' };
-
-const enum VOLUME_TYPE {
+export const enum VOLUME_TYPE {
 	VOLUME_MUTED = 0,
 	VOLUME_SOFT = 0.02,
 	VOLUME_NORMAL = 0.1,
@@ -29,18 +20,24 @@ export default class Menu extends Phaser.Scene {
 		this.sound.play('abyss', { loop: true, volume: VOLUME_TYPE.VOLUME_SOFT });
 
 		const { width, height } = this.game.config;
-		console.log(width, height);
+		this.add.bitmapText(
+			width as number / 2,
+			height as number / 2 - 110,
+			'necro',
+			'Necro Dog',
+		).setOrigin(0.5);
+
 		const dog = this.add.image( // random ai generated image
 			width as number / 2,
 			height as number / 2,
 			'cursed_dog',
 		).setScale(0.25);
-		this.add.text(
+		this.add.bitmapText(
 			width as number / 6,
 			height as number / 1.5,
+			'necro',
 			'Start',
-			text_config,
-		).setOrigin(0.5).setScale(0.5).setInteractive().on('pointerdown', () => {
+		).setOrigin(0.5).setInteractive().on('pointerdown', () => {
 			this.sound.play('click', { volume: VOLUME_TYPE.VOLUME_SOFT }); // changel volume of ambient noise here
 			this.cameras.main.fadeOut(1000, 0, 0, 0);
 			this.cameras.main.once(
@@ -51,12 +48,12 @@ export default class Menu extends Phaser.Scene {
 			);
 		});
 
-		this.add.text(
+		this.add.bitmapText(
 			width as number - (width as number / 6),
 			height as number / 1.5,
-			'Credits',
-			text_config,
-		).setOrigin(0.5).setScale(0.5).setInteractive().on('pointerdown', () => {
+			'necro',
+			'credits',
+		).setOrigin(0.5).setInteractive().on('pointerdown', () => {
 			this.sound.play('click', { volume: VOLUME_TYPE.VOLUME_SOFT });
 			this.scene.start('creditScene');
 		});
@@ -68,15 +65,5 @@ export default class Menu extends Phaser.Scene {
 			repeat: -1,
 			yoyo: true,
 		});
-
-		custom_text(
-			this,
-			'menu-text',
-			'Necro Dog',
-			Blood_Moon_xml.xml,
-			Blood_Moon_img.png,
-			width as number / 2,
-			height as number / 2 - 110,
-		);
 	}
 }

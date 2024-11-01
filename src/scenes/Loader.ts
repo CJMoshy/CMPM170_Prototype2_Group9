@@ -5,9 +5,10 @@ import click from '../../assets/audio/click.wav';
 import player from '../../assets/img/Necrodog.png';
 import bones from '../../assets/img/bonepile.png';
 import stash from '../../assets/img/stash.png';
-
-// import KRSP from '../../assets/font/KRS/KennyRocketSquare_0.png';
-// import KRSF from '../../assets/font/KRS/KennyRocketSquare.fnt';
+import bloodMoonPNG from '../../assets/font/BloodMoon/BloodMoon.png';
+import bloodMoonXML from '../../assets/font/BloodMoon/BloodMoon.xml';
+import boneFontPNG from '../../assets/font/Bone/bone.png';
+import boneFontXML from '../../assets/font/Bone/bone.xml';
 
 export default class Loader extends Phaser.Scene {
 	constructor() {
@@ -24,11 +25,18 @@ export default class Loader extends Phaser.Scene {
 		this.load.image('player', player);
 		this.load.image('bones', bones);
 		this.load.image('stash', stash);
-		// this.load.bitmapFont(
-		// 	'rocketSquare',
-		// 	KRSP,
-		// 	KRSF,
-		// );
+
+		// fonts
+		this.load.bitmapFont(
+			'bone',
+			boneFontPNG,
+			boneFontXML,
+		);
+		this.load.bitmapFont(
+			'necro',
+			bloodMoonPNG,
+			bloodMoonXML,
+		);
 	}
 	create() {
 		this.scene.start('menuScene');

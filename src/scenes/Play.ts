@@ -56,6 +56,9 @@ export default class Play extends Phaser.Scene {
 			0,
 		);
 
+		this.add.bitmapText(200, 200, 'bone', 'Bones: 0').setScale(0.5)
+			.setScrollFactor(0);
+
 		this.cameras.main.setBounds(0, 0, width as number, height as number);
 		this.cameras.main.setZoom(2);
 		this.cameras.main.setFollowOffset(0);

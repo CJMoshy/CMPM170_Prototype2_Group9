@@ -24,7 +24,7 @@ const GAME_CONFIG = {
 	scene: [Loader, Menu, Credits, Play],
 	fps: { forceSetTimeOut: true, target: 60 },
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-	new Phaser.Game(GAME_CONFIG);
-});
+document.addEventListener(
+	'DOMContentLoaded',
+	() => new Phaser.Game(GAME_CONFIG),
+);
