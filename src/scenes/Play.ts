@@ -3,7 +3,9 @@ import Player from '../prefabs/Player.ts';
 
 export default class Play extends Phaser.Scene {
 	private player!: Player;
+	private boneText!: Phaser.GameObjects.BitmapText;
 	private graveText: Map<string, string>;
+	private visitedGraves!: Set<string>;
 	constructor() {
 		super({ key: 'playScene' });
 		this.graveText = new Map<string, string>([
@@ -33,9 +35,11 @@ export default class Play extends Phaser.Scene {
 			['26, 9', 'Here lies Nala, who made every car ride an adventure'],
 			['18, 15', 'In loving memory of Duke, the proud protector of the yard'],
 		]);
+		this.visitedGraves = new Set<string>();
 	}
 
-	init() {}
+	init() {
+	}
 
 	preload() {}
 
@@ -56,19 +60,15 @@ export default class Play extends Phaser.Scene {
 
 		this.player = new Player(
 			this,
-			width as number / 2,
-			height as number / 2,
+			185,
+			15,
 			'player',
 			0,
 		);
 		this.player.anims.play('necroDog-idle-anim');
 
-		this.add.bitmapText(width as number / 4 + 25, 200, 'bone', 'Bones: 0')
-			.setScale(0.5)
-			.setScrollFactor(0);
-
 		this.cameras.main.setBounds(0, 0, width as number, height as number);
-		this.cameras.main.setZoom(2);
+		this.cameras.main.setZoom(3);
 		this.cameras.main.setFollowOffset(0);
 		this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
 		this.cameras.main.fadeIn(1000, 0, 0, 0);
@@ -81,17 +81,31 @@ export default class Play extends Phaser.Scene {
 			if (tile?.properties.Interactable === true) {
 				const key = tile?.x.toString() + ', ' + tile?.y.toString();
 				const writerScene = this.scene.get('writerScene');
-				writerScene.events.emit('dowindowthing', {
+				writerScene.events.emit('playerEnterGrave', {
 					text: this.graveText.get(key),
 				});
+				if (this.visitedGraves.has(key) === false) {
+					this.visitedGraves.add(key);
+					this.player.bone_count += 1;
+					this.boneText.text = `Bones: ${this.player.bone_count}`;
+				}
 			} else {
 				const writerScene = this.scene.get('writerScene');
 				writerScene.events.emit('playerLeftGrave');
 			}
 		});
+		this.boneText = this.add.bitmapText(
+			width as number / 4 + 50,
+			height as number - 120,
+			'bone',
+			'Bones: 0',
+		)
+			.setScale(0.2)
+			.setScrollFactor(0);
 	}
 
 	// deno-lint-ignore no-unused-vars
 	override update(time: number, delta: number): void {
+		this.player.update();
 	}
 }

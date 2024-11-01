@@ -22,7 +22,7 @@ export default class Writer extends Phaser.Scene {
 		// // dialog constants
 		this.DBOX_X = this.game.config.width as number / 2; // dialog box x-position
 		this.DBOX_Y = this.game.config.height as number / 2 - 150; // dialog box y-position
-		this.DBOX_FONT = 'bone'; // dialog box font key
+		this.DBOX_FONT = 'bonewhite'; // dialog box font key
 
 		this.TEXT_X = this.game.config.width as number / 2; // text w/in dialog box x-position
 		this.TEXT_Y = this.game.config.height as number / 2 - 130; // text w/in dialog box y-position
@@ -37,8 +37,8 @@ export default class Writer extends Phaser.Scene {
 
 	create() {
 		// // add dialog box sprite
-		// this.writingBox = this.add.sprite(this.DBOX_X, this.DBOX_Y, 'dBox')
-		// .setOrigin(0.5, 0).setScale(0.95)
+		this.writingBox = this.add.sprite(this.DBOX_X, this.DBOX_Y, 'dBox')
+			.setOrigin(0.5, 0).setScale(0.95).setAlpha(0);
 
 		this.dialogText = this.add.bitmapText(
 			this.TEXT_X,
@@ -48,14 +48,38 @@ export default class Writer extends Phaser.Scene {
 			this.TEXT_SIZE,
 		).setOrigin(0.5, 0).setMaxWidth(this.TEXT_MAX_WIDTH);
 
-		this.events.on('playerLeftGrave', () => {
-			this.dialogText!.text = '';
-			this.dialogTyping = false;
-		});
-		this.events.on('dowindowthing', (data: playSceneData) => {
+		this.events.on('playerEnterGrave', (data: playSceneData) => {
 			if (this.dialogTyping === false) {
-				console.log('here');
 				this.typeText(data.text);
+				this.add.tween({
+					targets: this.writingBox,
+					alpha: { from: 0, to: 1 },
+					delay: 0,
+					duration: 1000,
+					onComplete: () => this.writingBox.setAlpha(1),
+				});
+				this.events.once('playerLeftGrave', () => {
+					this.add.tween({
+						targets: this.dialogText,
+						alpha: { from: 1, to: 0 },
+						delay: 0,
+						duration: 1000,
+						onComplete: () => {
+							this.dialogText!.text = '';
+							this.dialogText?.setAlpha(1);
+							this.dialogTyping = false;
+						},
+					});
+					this.add.tween({
+						targets: this.writingBox,
+						alpha: { from: 1, to: 0 },
+						delay: 0,
+						duration: 1000,
+						onComplete: () => {
+							this.writingBox.setAlpha(0);
+						},
+					});
+				});
 			}
 		});
 	}

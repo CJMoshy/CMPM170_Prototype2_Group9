@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-	keys: Phaser.Types.Input.Keyboard.CursorKeys;
-	velocity: number;
-	bone_count: number;
+	private keys: Phaser.Types.Input.Keyboard.CursorKeys;
+	private velocity: number;
+	public bone_count: number;
 	private moveStatus!: string;
 	constructor(
 		scene: Phaser.Scene,
@@ -15,12 +15,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 		scene.add.existing(this);
 		scene.physics.add.existing(this);
-		this.scene.events.on('update', this.update, this);
 		this.setCollideWorldBounds(true);
 		this.setImmovable(true);
+		this.setOrigin(0.5);
 		this.setScale(0.25);
+		this.setSize(32, 20);
+		this.setOffset(12, 40);
 
-		this.velocity = 50;
+		this.velocity = 40;
 		this.moveStatus = '';
 		// maybe change in the future to something more complex
 		this.bone_count = 0;

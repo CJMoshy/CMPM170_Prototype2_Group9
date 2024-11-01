@@ -9,13 +9,15 @@ import bloodMoonPNG from '../../assets/font/BloodMoon/BloodMoon.png';
 import bloodMoonXML from '../../assets/font/BloodMoon/BloodMoon.xml';
 import boneFontPNG from '../../assets/font/Bone/bone.png';
 import boneFontXML from '../../assets/font/Bone/bone.xml';
+import boneFontWhitePNG from '../../assets/font/boneswhite/boneswhite.png';
+import boneFontWhiteXML from '../../assets/font/boneswhite/boneswhite.xml';
 import necroAnims from '../../assets/img/NecroDogAnimations.png';
 import necroRunning from '../../assets/img/NecroDogRunning.png';
 import tileset from '../../assets/tilemap/TilesetGraveyard.png';
 import mapData from '../../assets/tilemap/Graveyard_Scene.json' with {
 	type: 'json',
 };
-import dBox from '../../assets/img/DialogueBox.png';
+import dBox from '../../assets/img/DialogueBox2.png';
 
 export default class Loader extends Phaser.Scene {
 	constructor() {
@@ -39,6 +41,11 @@ export default class Loader extends Phaser.Scene {
 			'bone',
 			boneFontPNG,
 			boneFontXML,
+		);
+		this.load.bitmapFont(
+			'bonewhite',
+			boneFontWhitePNG,
+			boneFontWhiteXML,
 		);
 		this.load.bitmapFont(
 			'necro',
