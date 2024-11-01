@@ -70,7 +70,6 @@ export default class Play extends Phaser.Scene {
 		map.createLayer('Road', tiles, 0, 0);
 		const wallLayer = map.createLayer('obstacle', tiles, 0, 0);
 		const graveLayer = map.createLayer('Graves', tiles, 0, 0);
-		const graveLayer = map.createLayer('Graves', tiles, 0, 0);
 		wallLayer?.setCollisionByProperty({ Collision: true });
 		this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
