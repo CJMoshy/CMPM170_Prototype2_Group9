@@ -1,0 +1,153 @@
+
+		// const { width, height } = this.game.config;
+		// this.bones = this.physics.add.sprite(
+		// 	(width as number / 2) + 50,
+		// 	height as number / 2,
+		// 	'bones',
+		// ).setOrigin(0.5);
+		// this.bones.setScale(0.025);
+		// this.stash = this.physics.add.sprite(
+		// 	width as number / 2,
+		// 	height as number / 2 + 50,
+		// 	'stash',
+		// ).setOrigin(0.5);
+		// this.stash.setScale(0.05);
+		// this.player = new Player(
+		// 	this,
+		// 	width as number / 2,
+		// 	height as number / 2,
+		// 	'player',
+		// 	0,
+		// );
+		// this.boneCountText = this.add.bitmapText(
+		// 	this.player.x,
+		// 	this.player.y - 100,
+		// 	'rocketSquare',
+		// 	this.boneCount.toString(),
+		// 	50,
+		// 	1,
+		// );
+		// //
+		// this.stashCountText = this.add.bitmapText(
+		// 	this.stash.x,
+		// 	this.stash.y - 150,
+		// 	'rocketSquare',
+		// 	this.stashCount.toString(),
+		// 	50,
+		// 	1,
+		// );
+
+		// console.log(this.boneCount.toString(), this.stashCount.toString());
+
+		// this.physics.add.overlap(this.bones, this.player, () => {
+		// 	if (this.boneBuffer > 60 && this.boneCount < 3) {
+		// 		this.boneCount += 1;
+		// 		this.boneBuffer = 0;
+		// 		// this.boneCountText.text = this.boneCount.toString();
+		// 		console.log(this.boneCount);
+		// 	}
+		// });
+
+		// this.physics.add.overlap(this.stash, this.player, () => {
+		// 	this.stashCount += this.boneCount;
+		// 	this.boneCount = 0;
+		// 	// this.boneCountText.text = this.boneCount.toString();
+		// 	// this.stashCountText.text = this.stashCount.toString();
+		// });
+
+
+// handleMovement(){
+	//     this.dog.setVelocityY(0);
+	//     this.dog.setVelocityX(0);
+	//     if(this.up.isDown){
+	//         this.dog.setVelocityY(-400 + (this.boneCount * 50));
+	//     }
+	//     if(this.left.isDown){
+	//         this.dog.setVelocityX(-400 + (this.boneCount * 50));
+	//     }
+	//     if(this.down.isDown){
+	//         this.dog.setVelocityY(400 - (this.boneCount * 50));
+	//     }
+	//     if(this.right.isDown){
+	//         this.dog.setVelocityX(400 - (this.boneCount * 50));
+	//     }
+	//     this.boneCountText.x = this.dog.x;
+	//     this.boneCountText.y = this.dog.y - 100;
+	// }
+
+
+
+
+	/**
+ * Utility function for loading bitmap fonts in the game.
+ * Call this function if you want to add a bitmap font to your game.
+ * @param scene the scene to add the text to
+ * @param text the text to add to scene
+ * @param _text_cache_id unique id to register each text instance to
+ * @param xml base64 encoded string of the fonts xml file
+ * @param png base64 encoded strong of the fonts png file
+ * @param x number location to place on the screen
+ * @param y number location to place on the screen
+ */
+export default function custom_text(
+	scene: Phaser.Scene,
+	_text_cache_id: string,
+	text: string,
+	xml: string,
+	png: string,
+	x: number,
+	y: number,
+) {
+	const _xml = Phaser.DOM.ParseXML(atob(xml));
+	const image = new Image();
+	image.onload = () => {
+		if (!scene.textures.exists(_text_cache_id)) {
+			scene.textures.addImage(_text_cache_id, image);
+		}
+		const _data = Phaser.GameObjects.BitmapText.ParseXMLBitmapFont(
+			// @ts-ignore: type alias
+			_xml,
+			scene.textures.getFrame(_text_cache_id),
+			0,
+			0,
+		);
+		scene.cache.bitmapFont.add(_text_cache_id, {
+			data: _data,
+			texture: _text_cache_id,
+			frame: null,
+		});
+		scene.add.bitmapText(
+			x,
+			y,
+			_text_cache_id,
+			text,
+		).setOrigin(0.5).setScale(0.5);
+	};
+	image.src = png;
+}
+
+		// const window = this.add.graphics();
+		// window.fillStyle(0x000000, 1); // Color and alpha (transparency)
+		// window.fillRect(
+		// 	this.cameras.main.width / 2 - 100,
+		// 	this.cameras.main.height / 2 - 75,
+		// 	200,
+		// 	30,
+		// );
+		// window.setScrollFactor(0, 0);
+		// window.setVisible(false);
+
+		// const epitaph = this.add.text(
+		// 	this.cameras.main.width / 2 - 95,
+		// 	this.cameras.main.height / 2 - 75,
+		// 	'',
+		// 	{
+		// 		fontFamily: 'Roboto',
+		// 		fontSize: 10,
+		// 		color: '#fff',
+		// 		wordWrap: {
+		// 			width: 190,
+		// 		},
+		// 	},
+		// ).setScrollFactor(0);
+		// epitaph.setVisible(false);
