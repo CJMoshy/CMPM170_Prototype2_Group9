@@ -20,7 +20,7 @@ export default function custom_text(
 	const _xml = Phaser.DOM.ParseXML(atob(xml));
 	const image = new Image();
 	image.onload = () => {
-		if(!scene.textures.exists(name)){
+		if (!scene.textures.exists(name)) {
 			scene.textures.addImage(name, image);
 		}
 		// scene.textures.addImage(name, image);
