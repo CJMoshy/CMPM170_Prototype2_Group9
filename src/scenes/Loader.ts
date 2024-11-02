@@ -14,6 +14,7 @@ import boneFontWhiteXML from '../../assets/font/boneswhite/boneswhite.xml';
 import necroAnims from '../../assets/img/NecroDogAnimations.png';
 import necroRunning from '../../assets/img/NecroDogRunning.png';
 import tileset from '../../assets/tilemap/TilesetGraveyard.png';
+import vision from '../../assets/img/vision.png';
 import mapData from '../../assets/tilemap/Graveyard_Scene.json' with {
 	type: 'json',
 };
@@ -35,6 +36,7 @@ export default class Loader extends Phaser.Scene {
 		this.load.image('bones', bones);
 		this.load.image('stash', stash);
 		this.load.image('dBox', dBox);
+		this.load.image('vision', vision);
 
 		// fonts
 		this.load.bitmapFont(

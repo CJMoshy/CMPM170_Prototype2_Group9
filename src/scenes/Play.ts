@@ -6,6 +6,7 @@ export default class Play extends Phaser.Scene {
 	private boneText!: Phaser.GameObjects.BitmapText;
 	private graveText: Map<string, string>;
 	private visitedGraves!: Set<string>;
+	private vision: any;
 	constructor() {
 		super({ key: 'playScene' });
 		this.graveText = new Map<string, string>([
@@ -67,6 +68,24 @@ export default class Play extends Phaser.Scene {
 		);
 		this.player.anims.play('necroDog-idle-anim');
 
+		const rt = this.make.renderTexture({ 
+			width: this.scale.width, 
+			height: this.scale.height 
+		}, true);
+
+		this.vision = this.make.image({
+			x: this.player.x,
+			y: this.player.y,
+			key: 'vision',
+			alpha: 0.9,
+			add: true
+		});
+		this.vision.scale = .8;
+		this.vision.visible = false;
+		
+		rt.erase(this.vision);
+		rt.mask = new Phaser.Display.Masks.BitmapMask(this, this.vision);
+
 		this.cameras.main.setBounds(0, 0, width as number, height as number);
 		this.cameras.main.setZoom(3);
 		this.cameras.main.setFollowOffset(0);
@@ -107,5 +126,11 @@ export default class Play extends Phaser.Scene {
 	// deno-lint-ignore no-unused-vars
 	override update(time: number, delta: number): void {
 		this.player.update();
+		if (this.vision){
+			//TODO: change the vision circle based on when in graveyard
+			this.vision.visible = true;
+			this.vision.x = this.player.x;
+			this.vision.y = this.player.y;
+		}
 	}
 }
