@@ -69,13 +69,18 @@ export default class Play extends Phaser.Scene {
 		this.player.anims.play('necroDog-idle-anim');
 
 		const rt = this.make.renderTexture({ 
-			width: this.scale.width, 
-			height: this.scale.height 
+			x: 0,
+			y: 0,
+			width: map.widthInPixels, 
+			height: map.heightInPixels
 		}, true);
+		rt.setOrigin(0, 0);
+		rt.fill(0xbbc2c9);
+		rt.setAlpha(.4);
 
 		this.vision = this.make.image({
-			x: this.player.x,
-			y: this.player.y,
+			x: 0,
+			y: 0,
 			key: 'vision',
 			alpha: 0.9,
 			add: true
@@ -83,9 +88,6 @@ export default class Play extends Phaser.Scene {
 		this.vision.scale = .8;
 		this.vision.visible = false;
 		
-		rt.erase(this.vision);
-		rt.mask = new Phaser.Display.Masks.BitmapMask(this, this.vision);
-
 		this.cameras.main.setBounds(0, 0, width as number, height as number);
 		this.cameras.main.setZoom(3);
 		this.cameras.main.setFollowOffset(0);
