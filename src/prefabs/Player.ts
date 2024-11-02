@@ -31,15 +31,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys;
 		this.keys.left.on('down', () => {
 			this.anims.play('necroDog-run-anim');
-			if (!this.flipX) {
-				this.flipX = !this.flipX;
-			}
 		});
 		this.keys.right.on('down', () => {
 			this.anims.play('necroDog-run-anim');
-			if (this.flipX) {
-				this.flipX = !this.flipX;
-			}
 		});
 	}
 
@@ -62,10 +56,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		if (this.keys.left.isDown) {
 			vector.x = -1;
 			this.moveStatus = 'left';
+			if (!this.flipX) {
+				this.flipX = !this.flipX;
+			}
 		}
 		if (this.keys.right.isDown) {
 			vector.x = 1;
 			this.moveStatus = 'right';
+			if (this.flipX) {
+				this.flipX = !this.flipX;
+			}
 		}
 		if (
 			vector.x === 0 && vector.y === 0 && this.anims &&
