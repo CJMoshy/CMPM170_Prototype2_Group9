@@ -1,12 +1,14 @@
 import Phaser from 'phaser';
 import Player from '../prefabs/Player.ts';
+import { VOLUME_TYPE } from './Menu.ts';
 
 export default class Play extends Phaser.Scene {
 	private player!: Player;
 	private boneText!: Phaser.GameObjects.BitmapText;
 	private graveText: Map<string, string>;
 	private visitedGraves!: Set<string>;
-	private vision: any;
+	private vision!: Phaser.GameObjects.Image;
+	private rt!: Phaser.GameObjects.RenderTexture;
 	constructor() {
 		super({ key: 'playScene' });
 		this.graveText = new Map<string, string>([
@@ -57,6 +59,20 @@ export default class Play extends Phaser.Scene {
 		wallLayer?.setCollisionByProperty({ Collision: true });
 		this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
+		const entrace = map.getObjectLayer('GraveyardEntrance')!;
+		const triggerObject = entrace.objects[0]; // Get the first (and only) object
+
+		// Create an invisible zone for collision
+		const zone = this.add.zone(
+			triggerObject.x as number,
+			triggerObject.y as number,
+			triggerObject.width as number,
+			triggerObject.height as number,
+		);
+		this.physics.world.enable(zone);
+		zone.body.setAllowGravity(false);
+		zone.body.moves = false;
+
 		const { width, height } = this.game.config;
 
 		this.player = new Player(
@@ -68,26 +84,34 @@ export default class Play extends Phaser.Scene {
 		);
 		this.player.anims.play('necroDog-idle-anim');
 
-		const rt = this.make.renderTexture({ 
+		this.rt = this.make.renderTexture({
 			x: 0,
 			y: 0,
-			width: map.widthInPixels, 
-			height: map.heightInPixels
-		}, true);
-		rt.setOrigin(0, 0);
-		rt.fill(0xbbc2c9);
-		rt.setAlpha(.4);
+			width: map.widthInPixels,
+			height: map.heightInPixels,
+		}, true)
+			.setOrigin(0, 0)
+			.fill(0xbbc2c9)
+			.setAlpha(0);
 
 		this.vision = this.make.image({
 			x: 0,
 			y: 0,
 			key: 'vision',
-			alpha: 0.9,
-			add: true
+			alpha: 0,
+			add: true,
+			scale: 0.8,
 		});
-		this.vision.scale = .8;
-		this.vision.visible = false;
-		
+
+		this.boneText = this.add.bitmapText(
+			width as number / 4 + 50,
+			height as number - 120,
+			'bone',
+			'Bones: 0',
+		)
+			.setScale(0.2)
+			.setScrollFactor(0);
+
 		this.cameras.main.setBounds(0, 0, width as number, height as number);
 		this.cameras.main.setZoom(3);
 		this.cameras.main.setFollowOffset(0);
@@ -106,6 +130,7 @@ export default class Play extends Phaser.Scene {
 					text: this.graveText.get(key),
 				});
 				if (this.visitedGraves.has(key) === false) {
+					this.sound.play('collectBone', { volume: VOLUME_TYPE.VOLUME_SOFT });
 					this.visitedGraves.add(key);
 					this.player.bone_count += 1;
 					this.boneText.text = `Bones: ${this.player.bone_count}`;
@@ -115,24 +140,56 @@ export default class Play extends Phaser.Scene {
 				writerScene.events.emit('playerLeftGrave');
 			}
 		});
-		this.boneText = this.add.bitmapText(
-			width as number / 4 + 50,
-			height as number - 120,
-			'bone',
-			'Bones: 0',
-		)
-			.setScale(0.2)
-			.setScrollFactor(0);
+
+		// fundamental issue here with the player being able to bob back and forth with left and right and just toggle functions
+		this.physics.add.overlap(this.player, zone, () => {
+			if (this.player.inGraveyard === false && this.player.flipX === false) {
+				this.player.inGraveyard = true;
+				this.onEnterGraveyard();
+			}
+			if (this.player.inGraveyard && this.player.flipX) {
+				this.onExitGraveyard();
+				this.player.inGraveyard = false;
+			}
+		});
 	}
 
 	// deno-lint-ignore no-unused-vars
 	override update(time: number, delta: number): void {
 		this.player.update();
-		if (this.vision){
-			//TODO: change the vision circle based on when in graveyard
-			this.vision.visible = true;
+		if (this.vision) {
 			this.vision.x = this.player.x;
 			this.vision.y = this.player.y;
 		}
+	}
+
+	onEnterGraveyard() {
+		this.add.tween({
+			targets: this.rt,
+			alpha: { from: 0, to: 0.4 },
+			ease: 'Sine.InOut',
+			duration: 2000,
+		});
+		this.add.tween({
+			targets: this.vision,
+			alpha: { from: 0, to: 0.9 },
+			ease: 'Sine.InOut',
+			duration: 2000,
+		});
+	}
+
+	onExitGraveyard() {
+		this.add.tween({
+			targets: this.rt,
+			alpha: { from: 0.4, to: 0 },
+			ease: 'Sine.InOut',
+			duration: 2000,
+		});
+		this.add.tween({
+			targets: this.vision,
+			alpha: { from: 0.9, to: 0 },
+			ease: 'Sine.InOut',
+			duration: 2000,
+		});
 	}
 }

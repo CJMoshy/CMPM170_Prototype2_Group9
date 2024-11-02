@@ -2,9 +2,9 @@ import Phaser from 'phaser';
 
 export const enum VOLUME_TYPE {
 	VOLUME_MUTED = 0,
-	VOLUME_SOFT = 0.02,
-	VOLUME_NORMAL = 0.1,
-	VOLUME_LOUD = 1,
+	VOLUME_SOFT = 0.005,
+	VOLUME_NORMAL = 0.05,
+	VOLUME_LOUD = 0.1,
 }
 
 export default class Menu extends Phaser.Scene {

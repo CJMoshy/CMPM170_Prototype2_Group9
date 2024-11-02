@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import cursed_dog from '../../assets/img/Cursed_Dog.png';
 import abyss from '../../assets/audio/abyss.wav';
 import click from '../../assets/audio/click.wav';
+import collectBone from '../../assets/audio/collect-bone.mp3';
 import player from '../../assets/img/Necrodog.png';
 import bones from '../../assets/img/bonepile.png';
 import stash from '../../assets/img/stash.png';
@@ -31,6 +32,7 @@ export default class Loader extends Phaser.Scene {
 		// audio
 		this.load.audio('abyss', abyss);
 		this.load.audio('click', click);
+		this.load.audio('collectBone', collectBone);
 
 		this.load.image('player', player);
 		this.load.image('bones', bones);

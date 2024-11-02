@@ -4,6 +4,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private velocity: number;
 	public bone_count: number;
 	private moveStatus!: string;
+	public inGraveyard!: boolean;
+
 	constructor(
 		scene: Phaser.Scene,
 		x: number,
@@ -26,6 +28,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.moveStatus = '';
 		// maybe change in the future to something more complex
 		this.bone_count = 0;
+		this.inGraveyard = false;
 
 		this.keys = scene.input.keyboard
 			?.createCursorKeys() as Phaser.Types.Input.Keyboard.CursorKeys;
