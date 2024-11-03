@@ -3,9 +3,6 @@ import cursed_dog from '../../assets/img/Cursed_Dog.png';
 import abyss from '../../assets/audio/abyss.wav';
 import click from '../../assets/audio/click.wav';
 import collectBone from '../../assets/audio/collect-bone.mp3';
-import player from '../../assets/img/Necrodog.png';
-import bones from '../../assets/img/bonepile.png';
-import stash from '../../assets/img/stash.png';
 import bloodMoonPNG from '../../assets/font/BloodMoon/BloodMoon.png';
 import bloodMoonXML from '../../assets/font/BloodMoon/BloodMoon.xml';
 import boneFontPNG from '../../assets/font/Bone/bone.png';
@@ -20,7 +17,11 @@ import mapData from '../../assets/tilemap/Graveyard_Scene.json' with {
 	type: 'json',
 };
 import dBox from '../../assets/img/DialogueBox2.png';
-
+import bat from '../../assets/img/atlas/batSpritesheet.png';
+import batlas from '../../assets/img/atlas/batSprites.json' with {
+	type: 'json',
+};
+import bone from '../../assets/img/bone.png';
 export default class Loader extends Phaser.Scene {
 	constructor() {
 		super({ key: 'loaderScene' });
@@ -34,12 +35,9 @@ export default class Loader extends Phaser.Scene {
 		this.load.audio('click', click);
 		this.load.audio('collectBone', collectBone);
 
-		this.load.image('player', player);
-		this.load.image('bones', bones);
-		this.load.image('stash', stash);
 		this.load.image('dBox', dBox);
 		this.load.image('vision', vision);
-
+		this.load.image('boneIMG', bone);
 		// fonts
 		this.load.bitmapFont(
 			'bone',
@@ -73,6 +71,8 @@ export default class Loader extends Phaser.Scene {
 			frameWidth: 64,
 			frameHeight: 64,
 		});
+
+		this.load.atlas('bat', bat, batlas);
 		/**
 		 * //player anims----------------------------
         this.anims.create({
@@ -109,6 +109,19 @@ export default class Loader extends Phaser.Scene {
 			frameRate: 10,
 			repeat: -1,
 		});
+
+		this.anims.create({
+			key: 'bat-anim',
+			frames: this.anims.generateFrameNames('bat', {
+				prefix: 'Bat',
+				start: 1,
+				end: 4,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		});
+
+		this.anims.create;
 		this.scene.start('menuScene');
 	}
 }

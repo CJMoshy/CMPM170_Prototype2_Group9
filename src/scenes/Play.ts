@@ -9,6 +9,8 @@ export default class Play extends Phaser.Scene {
 	private visitedGraves!: Set<string>;
 	private vision!: Phaser.GameObjects.Image;
 	private rt!: Phaser.GameObjects.RenderTexture;
+	private VELOCITY!: number;
+	private emitter!: Phaser.GameObjects.Particles.ParticleEmitter;
 	constructor() {
 		super({ key: 'playScene' });
 		this.graveText = new Map<string, string>([
@@ -39,6 +41,7 @@ export default class Play extends Phaser.Scene {
 			['18, 15', 'In loving memory of Duke, the proud protector of the yard'],
 		]);
 		this.visitedGraves = new Set<string>();
+		this.VELOCITY = 20;
 	}
 
 	init() {
@@ -53,15 +56,24 @@ export default class Play extends Phaser.Scene {
 		map.createLayer('Ground', tiles, 0, 0);
 		map.createLayer('grass', tiles, 0, 0);
 		map.createLayer('Road', tiles, 0, 0);
-		const wallLayer = map.createLayer('obstacle', tiles, 0, 0);
-		const graveLayer = map.createLayer('Graves', tiles, 0, 0);
 
+		const wallLayer = map.createLayer('obstacle', tiles, 0, 0);
 		wallLayer?.setCollisionByProperty({ Collision: true });
-		this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+		const graveLayer = map.createLayer('Graves', tiles, 0, 0);
+		graveLayer?.setCollisionByProperty({ Interactable: true });
 
 		const entrace = map.getObjectLayer('GraveyardEntrance')!;
 		const triggerObject = entrace.objects[0]; // Get the first (and only) object
 
+		const bats: Phaser.GameObjects.GameObject[] = [];
+		const batLayer = map.getObjectLayer('Bats');
+		batLayer?.objects.forEach((e) => {
+			bats.push(
+				this.physics.add.sprite(e.x as number, e.y as number, 'bat', 0)
+					.setScale(0.08).anims.play('bat-anim'),
+			);
+		});
 		// Create an invisible zone for collision
 		const zone = this.add.zone(
 			triggerObject.x as number,
@@ -82,7 +94,15 @@ export default class Play extends Phaser.Scene {
 			'player',
 			0,
 		);
-		this.player.anims.play('necroDog-idle-anim');
+
+		this.emitter = this.add.particles(this.player.x, this.player.y, 'boneIMG', { //init emitter
+			lifespan: 6000, //how long particles exist
+			angle: { min: 180, max: 360 },
+			speed: { min: 25, max: 50 }, //starting speed / max speed
+			scale: { start: 0.1, end: 0 }, // size of particles
+			gravityY: 150,
+			emitting: false,
+		});
 
 		this.rt = this.make.renderTexture({
 			x: 0,
@@ -118,9 +138,11 @@ export default class Play extends Phaser.Scene {
 		this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
 		this.cameras.main.fadeIn(1000, 0, 0, 0);
 
+		const MAX_GAME_VOLUME = 4.5;
+
+		this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 		this.physics.add.collider(this.player, wallLayer!);
 		this.physics.add.collider(this.player, wallLayer!);
-		graveLayer?.setCollisionByProperty({ Interactable: true });
 		this.physics.add.overlap(this.player, graveLayer!, () => {
 			const tile = graveLayer?.getTileAtWorldXY(this.player.x, this.player.y);
 			if (tile?.properties.Interactable === true) {
@@ -131,6 +153,14 @@ export default class Play extends Phaser.Scene {
 				});
 				if (this.visitedGraves.has(key) === false) {
 					this.sound.play('collectBone', { volume: VOLUME_TYPE.VOLUME_SOFT });
+					const computed = this.sound.volume + (this.sound.volume * 0.12);
+					if (computed > MAX_GAME_VOLUME) {
+						this.sound.setVolume(MAX_GAME_VOLUME);
+					} else this.sound.setVolume(computed);
+					this.cameras.main.shake(1500, 0.0005);
+					this.emitter.setX(tile.pixelX);
+					this.emitter.setY(tile.pixelY);
+					this.emitter.explode(10);
 					this.visitedGraves.add(key);
 					this.player.bone_count += 1;
 					this.boneText.text = `Bones: ${this.player.bone_count}`;
@@ -151,6 +181,17 @@ export default class Play extends Phaser.Scene {
 				this.onExitGraveyard();
 				this.player.inGraveyard = false;
 			}
+		});
+
+		this.time.addEvent({
+			delay: 1700,
+			callback: () => {
+				bats.forEach((e) =>
+					this.updateMovement(e as Phaser.Physics.Arcade.Sprite)
+				);
+			},
+			callbackScope: this,
+			loop: true,
 		});
 	}
 
@@ -191,5 +232,54 @@ export default class Play extends Phaser.Scene {
 			ease: 'Sine.InOut',
 			duration: 2000,
 		});
+	}
+
+	//------updateMovement
+	/**
+	 * Takes a  entity and context scene, and randomly updates that entitys movement
+	 *
+	 * @param {Phaser.Physics.Arcade.Sprite} entity
+	 * @returns {void}
+	 */
+	updateMovement(entity: Phaser.Physics.Arcade.Sprite) {
+		const decider = Math.round(Math.random() * 4);
+		switch (decider) {
+			case 1:
+				entity.setVelocityX(this.VELOCITY);
+				this.time.delayedCall(750, () => {
+					entity.setVelocity(0);
+					this.time.delayedCall(500, () => {
+						entity.setVelocityX(-this.VELOCITY);
+					});
+				});
+				break;
+			case 2:
+				entity.setVelocityX(-this.VELOCITY);
+				this.time.delayedCall(750, () => {
+					entity.setVelocity(0);
+					this.time.delayedCall(500, () => {
+						entity.setVelocityX(this.VELOCITY);
+					});
+				});
+				break;
+			case 3:
+				entity.setVelocityY(this.VELOCITY);
+				this.time.delayedCall(750, () => {
+					entity.setVelocity(0);
+					this.time.delayedCall(500, () => {
+						entity.setVelocityY(-this.VELOCITY);
+					});
+				});
+				break;
+			case 4:
+				entity.setVelocityY(-this.VELOCITY);
+				this.time.delayedCall(750, () => {
+					entity.setVelocity(0);
+					this.time.delayedCall(500, () => {
+						entity.setVelocityY(this.VELOCITY);
+					});
+				});
+				break;
+		}
 	}
 }
