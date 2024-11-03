@@ -11,6 +11,8 @@ import boneFontWhitePNG from '../../assets/font/boneswhite/boneswhite.png';
 import boneFontWhiteXML from '../../assets/font/boneswhite/boneswhite.xml';
 import necroAnims from '../../assets/img/NecroDogAnimations.png';
 import necroRunning from '../../assets/img/NecroDogRunning.png';
+import necroUp from "../../assets/img/NecroDogUp.png";
+import necroDown from "../../assets/img/NecroDogDown.png";
 import tileset from '../../assets/tilemap/TilesetGraveyard.png';
 import vision from '../../assets/img/vision.png';
 import mapData from '../../assets/tilemap/Graveyard_Scene.json' with {
@@ -73,6 +75,16 @@ export default class Loader extends Phaser.Scene {
 			frameHeight: 64,
 		});
 
+		this.load.spritesheet('necroDog-up', necroUp, {
+			frameWidth: 64,
+			frameHeight: 64,
+		});
+
+		this.load.spritesheet('necroDog-down', necroDown, {
+			frameWidth: 64,
+			frameHeight: 64,
+		});
+
 		this.load.atlas('bat', bat, batlas);
 	}
 	create() {
@@ -106,6 +118,27 @@ export default class Loader extends Phaser.Scene {
 			frameRate: 12,
 			repeat: -1,
 		});
+
+		this.anims.create({
+			key: "necroDog-up-anim",
+			frames: this.anims.generateFrameNames('necroDog-up', {
+				start: 0,
+				end: 7,
+			}),
+			frameRate: 10,
+			repeat: -1,
+		});
+
+		this.anims.create({
+			key: "necroDog-down-anim",
+			frames: this.anims.generateFrameNames('necroDog-down', {
+				start: 0,
+				end: 7,
+			}),
+			frameRate: 10,
+			repeat: -1,
+		});
+
 		this.scene.start('menuScene');
 	}
 }

@@ -38,6 +38,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.keys.right.on('down', () => {
 			this.anims.play('necroDog-run-anim');
 		});
+		this.keys.up.on('down', () => {
+			this.anims.play('necroDog-up-anim');
+		});
+		this.keys.down.on('down', () => {
+			this.anims.play('necroDog-down-anim');
+		});
 	}
 
 	override update() {
