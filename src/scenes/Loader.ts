@@ -2,9 +2,7 @@ import Phaser from 'phaser';
 import cursed_dog from '../../assets/img/Cursed_Dog.png';
 import abyss from '../../assets/audio/abyss.wav';
 import click from '../../assets/audio/click.wav';
-import player from '../../assets/img/Necrodog.png';
-import bones from '../../assets/img/bonepile.png';
-import stash from '../../assets/img/stash.png';
+import collectBone from '../../assets/audio/collect-bone.mp3';
 import bloodMoonPNG from '../../assets/font/BloodMoon/BloodMoon.png';
 import bloodMoonXML from '../../assets/font/BloodMoon/BloodMoon.xml';
 import boneFontPNG from '../../assets/font/Bone/bone.png';
@@ -14,10 +12,16 @@ import boneFontWhiteXML from '../../assets/font/boneswhite/boneswhite.xml';
 import necroAnims from '../../assets/img/NecroDogAnimations.png';
 import necroRunning from '../../assets/img/NecroDogRunning.png';
 import tileset from '../../assets/tilemap/TilesetGraveyard.png';
+import vision from '../../assets/img/vision.png';
 import mapData from '../../assets/tilemap/Graveyard_Scene.json' with {
 	type: 'json',
 };
 import dBox from '../../assets/img/DialogueBox2.png';
+import bat from '../../assets/img/atlas/batSpritesheet.png';
+import batlas from '../../assets/img/atlas/batSprites.json' with {
+	type: 'json',
+};
+import bone from '../../assets/img/bone.png';
 
 export default class Loader extends Phaser.Scene {
 	constructor() {
@@ -30,12 +34,11 @@ export default class Loader extends Phaser.Scene {
 		// audio
 		this.load.audio('abyss', abyss);
 		this.load.audio('click', click);
+		this.load.audio('collectBone', collectBone);
 
-		this.load.image('player', player);
-		this.load.image('bones', bones);
-		this.load.image('stash', stash);
 		this.load.image('dBox', dBox);
-
+		this.load.image('vision', vision);
+		this.load.image('boneIMG', bone);
 		// fonts
 		this.load.bitmapFont(
 			'bone',
@@ -69,21 +72,8 @@ export default class Loader extends Phaser.Scene {
 			frameWidth: 64,
 			frameHeight: 64,
 		});
-		/**
-		 * //player anims----------------------------
-        this.anims.create({
-            key: 'player-walk-up',
-            frames: this.anims.generateFrameNames('player', {
-                prefix: 'walking-up-',
-                start: 1,
-                end: 2
-            }),
-            frameRate: 10,
-            repeat: false
-        })
 
-        this.anims.create({
-		 */
+		this.load.atlas('bat', bat, batlas);
 	}
 	create() {
 		this.anims.create({
@@ -103,6 +93,17 @@ export default class Loader extends Phaser.Scene {
 				end: 7,
 			}),
 			frameRate: 10,
+			repeat: -1,
+		});
+
+		this.anims.create({
+			key: 'bat-anim',
+			frames: this.anims.generateFrameNames('bat', {
+				prefix: 'Bat',
+				start: 1,
+				end: 4,
+			}),
+			frameRate: 12,
 			repeat: -1,
 		});
 		this.scene.start('menuScene');

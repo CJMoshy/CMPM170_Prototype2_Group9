@@ -110,13 +110,6 @@ export default class Writer extends Phaser.Scene {
 				if (this.textTimer!.getRepeatCount() == 0) {
 					// show prompt for more text
 					this.textTimer!.destroy(); // destroy timer
-					// this.time.addEvent({
-					// 	delay: 1000,
-					// 	repeat: 0,
-					// 	callback: () => {
-					// 		this.dialogText!.text = '';
-					// 	},
-					// });
 				}
 			},
 			callbackScope: this, // keep Scene context

@@ -1,11 +1,16 @@
 import Phaser from 'phaser';
 import Player from '../prefabs/Player.ts';
+import { VOLUME_TYPE } from './Menu.ts';
 
 export default class Play extends Phaser.Scene {
 	private player!: Player;
 	private boneText!: Phaser.GameObjects.BitmapText;
 	private graveText: Map<string, string>;
 	private visitedGraves!: Set<string>;
+	private vision!: Phaser.GameObjects.Image;
+	private rt!: Phaser.GameObjects.RenderTexture;
+	private VELOCITY!: number;
+	private emitter!: Phaser.GameObjects.Particles.ParticleEmitter;
 	constructor() {
 		super({ key: 'playScene' });
 		this.graveText = new Map<string, string>([
@@ -36,6 +41,7 @@ export default class Play extends Phaser.Scene {
 			['18, 15', 'In loving memory of Duke, the proud protector of the yard'],
 		]);
 		this.visitedGraves = new Set<string>();
+		this.VELOCITY = 20;
 	}
 
 	init() {
@@ -50,13 +56,15 @@ export default class Play extends Phaser.Scene {
 		map.createLayer('Ground', tiles, 0, 0);
 		map.createLayer('grass', tiles, 0, 0);
 		map.createLayer('Road', tiles, 0, 0);
+
 		const wallLayer = map.createLayer('obstacle', tiles, 0, 0);
-		const graveLayer = map.createLayer('Graves', tiles, 0, 0);
-
 		wallLayer?.setCollisionByProperty({ Collision: true });
-		this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-		const { width, height } = this.game.config;
+		const graveLayer = map.createLayer('Graves', tiles, 0, 0);
+		graveLayer?.setCollisionByProperty({ Interactable: true });
+
+		const entrace = map.getObjectLayer('GraveyardEntrance')!;
+		const triggerObject = entrace.objects[0]; // Get the first (and only) object
 
 		this.player = new Player(
 			this,
@@ -65,7 +73,64 @@ export default class Play extends Phaser.Scene {
 			'player',
 			0,
 		);
-		this.player.anims.play('necroDog-idle-anim');
+
+		const bats: Phaser.GameObjects.GameObject[] = [];
+		const batLayer = map.getObjectLayer('Bats');
+		batLayer?.objects.forEach((e) => {
+			bats.push(
+				this.physics.add.sprite(e.x as number, e.y as number, 'bat', 0)
+					.setScale(0.08).anims.play('bat-anim'),
+			);
+		});
+		// Create an invisible zone for collision
+		const zone = this.add.zone(
+			triggerObject.x as number,
+			triggerObject.y as number,
+			triggerObject.width as number,
+			triggerObject.height as number,
+		);
+		this.physics.world.enable(zone);
+		zone.body.setAllowGravity(false);
+		zone.body.moves = false;
+
+		const { width, height } = this.game.config;
+
+		this.emitter = this.add.particles(this.player.x, this.player.y, 'boneIMG', { //init emitter
+			lifespan: 6000, //how long particles exist
+			angle: { min: 180, max: 360 },
+			speed: { min: 25, max: 50 }, //starting speed / max speed
+			scale: { start: 0.1, end: 0 }, // size of particles
+			gravityY: 150,
+			emitting: false,
+		});
+
+		this.rt = this.make.renderTexture({
+			x: 0,
+			y: 0,
+			width: map.widthInPixels,
+			height: map.heightInPixels,
+		}, true)
+			.setOrigin(0, 0)
+			.fill(0xbbc2c9)
+			.setAlpha(0);
+
+		this.vision = this.make.image({
+			x: 0,
+			y: 0,
+			key: 'vision',
+			alpha: 0,
+			add: true,
+			scale: 0.8,
+		});
+
+		this.boneText = this.add.bitmapText(
+			width as number / 4 + 50,
+			height as number - 120,
+			'bone',
+			'Bones: 0',
+		)
+			.setScale(0.2)
+			.setScrollFactor(0);
 
 		this.cameras.main.setBounds(0, 0, width as number, height as number);
 		this.cameras.main.setZoom(3);
@@ -73,9 +138,11 @@ export default class Play extends Phaser.Scene {
 		this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
 		this.cameras.main.fadeIn(1000, 0, 0, 0);
 
+		const MAX_GAME_VOLUME = 4.5;
+
+		this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 		this.physics.add.collider(this.player, wallLayer!);
 		this.physics.add.collider(this.player, wallLayer!);
-		graveLayer?.setCollisionByProperty({ Interactable: true });
 		this.physics.add.overlap(this.player, graveLayer!, () => {
 			const tile = graveLayer?.getTileAtWorldXY(this.player.x, this.player.y);
 			if (tile?.properties.Interactable === true) {
@@ -85,27 +152,143 @@ export default class Play extends Phaser.Scene {
 					text: this.graveText.get(key),
 				});
 				if (this.visitedGraves.has(key) === false) {
-					this.visitedGraves.add(key);
-					this.player.bone_count += 1;
-					this.boneText.text = `Bones: ${this.player.bone_count}`;
+					this.newGraveInteraction(MAX_GAME_VOLUME, tile, key);
 				}
 			} else {
 				const writerScene = this.scene.get('writerScene');
 				writerScene.events.emit('playerLeftGrave');
 			}
 		});
-		this.boneText = this.add.bitmapText(
-			width as number / 4 + 50,
-			height as number - 120,
-			'bone',
-			'Bones: 0',
-		)
-			.setScale(0.2)
-			.setScrollFactor(0);
+
+		// fundamental issue here with the player being able to bob back and forth with left and right and just toggle functions
+		this.physics.add.overlap(this.player, zone, () => {
+			if (this.player.inGraveyard === false && this.player.flipX === false) {
+				this.player.inGraveyard = true;
+				this.onEnterGraveyard();
+			}
+			if (this.player.inGraveyard && this.player.flipX) {
+				this.onExitGraveyard();
+				this.player.inGraveyard = false;
+			}
+		});
+
+		this.time.addEvent({
+			delay: 1700,
+			callback: () => {
+				bats.forEach((e) =>
+					this.updateMovement(e as Phaser.Physics.Arcade.Sprite)
+				);
+			},
+			callbackScope: this,
+			loop: true,
+		});
+	}
+
+	private newGraveInteraction(
+		MAX_GAME_VOLUME: number,
+		tile: Phaser.Tilemaps.Tile,
+		key: string,
+	) {
+		this.sound.play('collectBone', { volume: VOLUME_TYPE.VOLUME_SOFT });
+		const computed = this.sound.volume + (this.sound.volume * 0.12);
+		if (computed > MAX_GAME_VOLUME) {
+			this.sound.setVolume(MAX_GAME_VOLUME);
+		} else this.sound.setVolume(computed);
+		this.cameras.main.shake(1500, 0.0005);
+		this.emitter.setX(tile.pixelX);
+		this.emitter.setY(tile.pixelY);
+		this.emitter.explode(10);
+		this.visitedGraves.add(key);
+		this.player.bone_count += 1;
+		this.player.increaseSpeed();
+		this.boneText.text = `Bones: ${this.player.bone_count}`;
 	}
 
 	// deno-lint-ignore no-unused-vars
 	override update(time: number, delta: number): void {
 		this.player.update();
+		if (this.vision) {
+			this.vision.x = this.player.x;
+			this.vision.y = this.player.y;
+		}
+	}
+
+	private onEnterGraveyard() {
+		this.add.tween({
+			targets: this.rt,
+			alpha: { from: 0, to: 0.4 },
+			ease: 'Sine.InOut',
+			duration: 2000,
+		});
+		this.add.tween({
+			targets: this.vision,
+			alpha: { from: 0, to: 0.9 },
+			ease: 'Sine.InOut',
+			duration: 2000,
+		});
+	}
+
+	private onExitGraveyard() {
+		this.add.tween({
+			targets: this.rt,
+			alpha: { from: 0.4, to: 0 },
+			ease: 'Sine.InOut',
+			duration: 2000,
+		});
+		this.add.tween({
+			targets: this.vision,
+			alpha: { from: 0.9, to: 0 },
+			ease: 'Sine.InOut',
+			duration: 2000,
+		});
+	}
+
+	//------updateMovement
+	/**
+	 * Takes a  entity and context scene, and randomly updates that entitys movement
+	 *
+	 * @param {Phaser.Physics.Arcade.Sprite} entity
+	 * @returns {void}
+	 */
+	private updateMovement(entity: Phaser.Physics.Arcade.Sprite) {
+		const decider = Math.round(Math.random() * 4);
+		switch (decider) {
+			case 1:
+				entity.setVelocityX(this.VELOCITY);
+				this.time.delayedCall(750, () => {
+					entity.setVelocity(0);
+					this.time.delayedCall(500, () => {
+						entity.setVelocityX(-this.VELOCITY);
+					});
+				});
+				break;
+			case 2:
+				entity.setVelocityX(-this.VELOCITY);
+				this.time.delayedCall(750, () => {
+					entity.setVelocity(0);
+					this.time.delayedCall(500, () => {
+						entity.setVelocityX(this.VELOCITY);
+					});
+				});
+				break;
+			case 3:
+				entity.setVelocityY(this.VELOCITY);
+				this.time.delayedCall(750, () => {
+					entity.setVelocity(0);
+					this.time.delayedCall(500, () => {
+						entity.setVelocityY(-this.VELOCITY);
+					});
+				});
+				break;
+			case 4:
+				entity.setVelocityY(-this.VELOCITY);
+				this.time.delayedCall(750, () => {
+					entity.setVelocity(0);
+					this.time.delayedCall(500, () => {
+						entity.setVelocityY(this.VELOCITY);
+					});
+				});
+				break;
+		}
 	}
 }
