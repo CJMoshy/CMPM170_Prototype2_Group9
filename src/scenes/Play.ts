@@ -66,6 +66,14 @@ export default class Play extends Phaser.Scene {
 		const entrace = map.getObjectLayer('GraveyardEntrance')!;
 		const triggerObject = entrace.objects[0]; // Get the first (and only) object
 
+		this.player = new Player(
+			this,
+			185,
+			15,
+			'player',
+			0,
+		);
+
 		const bats: Phaser.GameObjects.GameObject[] = [];
 		const batLayer = map.getObjectLayer('Bats');
 		batLayer?.objects.forEach((e) => {
@@ -86,14 +94,6 @@ export default class Play extends Phaser.Scene {
 		zone.body.moves = false;
 
 		const { width, height } = this.game.config;
-
-		this.player = new Player(
-			this,
-			185,
-			15,
-			'player',
-			0,
-		);
 
 		this.emitter = this.add.particles(this.player.x, this.player.y, 'boneIMG', { //init emitter
 			lifespan: 6000, //how long particles exist
@@ -152,18 +152,7 @@ export default class Play extends Phaser.Scene {
 					text: this.graveText.get(key),
 				});
 				if (this.visitedGraves.has(key) === false) {
-					this.sound.play('collectBone', { volume: VOLUME_TYPE.VOLUME_SOFT });
-					const computed = this.sound.volume + (this.sound.volume * 0.12);
-					if (computed > MAX_GAME_VOLUME) {
-						this.sound.setVolume(MAX_GAME_VOLUME);
-					} else this.sound.setVolume(computed);
-					this.cameras.main.shake(1500, 0.0005);
-					this.emitter.setX(tile.pixelX);
-					this.emitter.setY(tile.pixelY);
-					this.emitter.explode(10);
-					this.visitedGraves.add(key);
-					this.player.bone_count += 1;
-					this.boneText.text = `Bones: ${this.player.bone_count}`;
+					this.newGraveInteraction(MAX_GAME_VOLUME, tile, key);
 				}
 			} else {
 				const writerScene = this.scene.get('writerScene');
@@ -195,6 +184,26 @@ export default class Play extends Phaser.Scene {
 		});
 	}
 
+	private newGraveInteraction(
+		MAX_GAME_VOLUME: number,
+		tile: Phaser.Tilemaps.Tile,
+		key: string,
+	) {
+		this.sound.play('collectBone', { volume: VOLUME_TYPE.VOLUME_SOFT });
+		const computed = this.sound.volume + (this.sound.volume * 0.12);
+		if (computed > MAX_GAME_VOLUME) {
+			this.sound.setVolume(MAX_GAME_VOLUME);
+		} else this.sound.setVolume(computed);
+		this.cameras.main.shake(1500, 0.0005);
+		this.emitter.setX(tile.pixelX);
+		this.emitter.setY(tile.pixelY);
+		this.emitter.explode(10);
+		this.visitedGraves.add(key);
+		this.player.bone_count += 1;
+		this.player.increaseSpeed();
+		this.boneText.text = `Bones: ${this.player.bone_count}`;
+	}
+
 	// deno-lint-ignore no-unused-vars
 	override update(time: number, delta: number): void {
 		this.player.update();
@@ -204,7 +213,7 @@ export default class Play extends Phaser.Scene {
 		}
 	}
 
-	onEnterGraveyard() {
+	private onEnterGraveyard() {
 		this.add.tween({
 			targets: this.rt,
 			alpha: { from: 0, to: 0.4 },
@@ -219,7 +228,7 @@ export default class Play extends Phaser.Scene {
 		});
 	}
 
-	onExitGraveyard() {
+	private onExitGraveyard() {
 		this.add.tween({
 			targets: this.rt,
 			alpha: { from: 0.4, to: 0 },
@@ -241,7 +250,7 @@ export default class Play extends Phaser.Scene {
 	 * @param {Phaser.Physics.Arcade.Sprite} entity
 	 * @returns {void}
 	 */
-	updateMovement(entity: Phaser.Physics.Arcade.Sprite) {
+	private updateMovement(entity: Phaser.Physics.Arcade.Sprite) {
 		const decider = Math.round(Math.random() * 4);
 		switch (decider) {
 			case 1:

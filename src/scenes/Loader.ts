@@ -22,6 +22,7 @@ import batlas from '../../assets/img/atlas/batSprites.json' with {
 	type: 'json',
 };
 import bone from '../../assets/img/bone.png';
+
 export default class Loader extends Phaser.Scene {
 	constructor() {
 		super({ key: 'loaderScene' });
@@ -73,21 +74,6 @@ export default class Loader extends Phaser.Scene {
 		});
 
 		this.load.atlas('bat', bat, batlas);
-		/**
-		 * //player anims----------------------------
-        this.anims.create({
-            key: 'player-walk-up',
-            frames: this.anims.generateFrameNames('player', {
-                prefix: 'walking-up-',
-                start: 1,
-                end: 2
-            }),
-            frameRate: 10,
-            repeat: false
-        })
-
-        this.anims.create({
-		 */
 	}
 	create() {
 		this.anims.create({
@@ -120,8 +106,6 @@ export default class Loader extends Phaser.Scene {
 			frameRate: 12,
 			repeat: -1,
 		});
-
-		this.anims.create;
 		this.scene.start('menuScene');
 	}
 }

@@ -24,7 +24,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setSize(32, 20);
 		this.setOffset(12, 40);
 
-		this.velocity = 40;
+		this.velocity = 25;
 		this.moveStatus = '';
 		// maybe change in the future to something more complex
 		this.bone_count = 0;
@@ -87,5 +87,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		if (!this.anims.isPlaying && this.moveStatus === 'none') {
 			this.anims.play('necroDog-idle-anim');
 		}
+	}
+
+	increaseSpeed() {
+		this.velocity += 1.3;
 	}
 }
